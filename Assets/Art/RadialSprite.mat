@@ -54,6 +54,7 @@ Material:
     - _Anticlockwise: 0
     - _EnableExternalAlpha: 0
     - _Fill: 0
+    - _Opacity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _StartAngle: 0

@@ -7,6 +7,8 @@ public class Circle : MonoBehaviour
     public SpriteRenderer outerCircle;
     public SpriteRenderer innerCircle;
 
+    public float flashDuration = 0.5f;
+
     public List<Rune> runes = new List<Rune>();
 
     private Material _outMat;
@@ -16,7 +18,10 @@ public class Circle : MonoBehaviour
     public float fill = 1f;
 
     private float _startAngle = 0f;
+    private bool _startedDrawing = false;
+    private bool _doingAnimation = false;
     private bool _drawing = false;
+    private float _opacity = 1f;
 
     private Vector2 _lastDir = Vector2.zero;
 
@@ -40,10 +45,18 @@ public class Circle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_drawing == false)
+        if (_startedDrawing && _drawing == false && _doingAnimation == false)
         {
-            fill = Mathf.Max(fill - Time.deltaTime * 0.2f, 0f);
-            ApplyFill();
+            _opacity = Mathf.Max(_opacity - Time.deltaTime, 0);
+            if (_opacity == 0)
+            {
+                fill = 0;
+                ApplyFill();
+                _opacity = 1f;
+                _startedDrawing = false;
+            }
+            _outMat.SetFloat("_Opacity", _opacity);
+            _inMat.SetFloat("_Opacity", _opacity);
         }
     }
 
@@ -55,7 +68,13 @@ public class Circle : MonoBehaviour
 
     private void UpdateRunes()
     {
+        string combo = "";
+        foreach (Rune rune in runes)
+        {
+            combo += rune.isOn ? "1" : "0";
+        }
 
+        GameManager.SetRunes(combo);
     }
 
     private void OnMouseDown()
@@ -65,19 +84,8 @@ public class Circle : MonoBehaviour
 
     private void OnMouseExit()
     {
-        _drawing = false;
-        fill = 0;
-    }
-
-    private void StartDrawingCircle()
-    {
-        if (_drawing == false)
-        {
-            _lastDir = MousePos - transform.position;
-            _startAngle = Vector2.SignedAngle(_lastDir, Vector2.up);
-            _outMat.SetFloat("_StartAngle", _startAngle);
-            _drawing = true;
-        }
+        if (_drawing && !_doingAnimation)
+            StopDrawing();
     }
 
     private void OnMouseDrag()
@@ -85,9 +93,29 @@ public class Circle : MonoBehaviour
         DrawCircle();
     }
 
+    private void StartDrawingCircle()
+    {
+        if (_doingAnimation)
+            return;
+
+        if (_startedDrawing == false)
+        {
+            _lastDir = MousePos - transform.position;
+            _startAngle = Vector2.SignedAngle(_lastDir, Vector2.up);
+            _outMat.SetFloat("_StartAngle", _startAngle);
+            _startedDrawing = true;
+
+            foreach (Rune rune in runes)
+                rune.ColliderOn = false;
+        }
+
+        _drawing = true;
+        ResetOpacity();
+    }
+
     private void DrawCircle()
     {
-        if (_drawing == false)
+        if (_drawing == false || _doingAnimation)
             return;
 
         Vector2 direction = MousePos - transform.position;
@@ -103,9 +131,92 @@ public class Circle : MonoBehaviour
         ApplyFill();
     }
 
+    private void StopDrawing()
+    {
+        _drawing = false;
+        foreach (Rune rune in runes)
+            rune.ColliderOn = true;
+    }
+
     private void FinishCircle()
     {
+        if (_finishCircleCo != null)
+            return;
 
+        _startedDrawing = false;
+        if (GameManager.CanSummon())
+        {
+            _finishCircleCo = StartCoroutine(SummonAnimation());
+        }
+        else
+        {
+            _finishCircleCo = StartCoroutine(SummonFailedAnimation());
+        }
+    }
+
+    private Coroutine _finishCircleCo = null;
+    private IEnumerator SummonAnimation()
+    {
+        _doingAnimation = true;
+
+        if (flashDuration > 0)
+        {
+            float startTime = Time.time;
+            _opacity = 1;
+            while (Time.time < startTime + flashDuration)
+            {
+                _opacity += (Time.deltaTime / flashDuration) * 2f;
+                _outMat.SetFloat("_Opacity", _opacity);
+                _inMat.SetFloat("_Opacity", _opacity);
+
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        ResetOpacity();
+
+        fill = 0;
+        ApplyFill();
+
+        _doingAnimation = false;
+        StopDrawing();
+
+        GameManager.Summon();
+
+        _finishCircleCo = null;
+    }
+    private IEnumerator SummonFailedAnimation()
+    {
+        _doingAnimation = true;
+
+        if (flashDuration > 0)
+        {
+            float startTime = Time.time;
+            _opacity = 1;
+            while (Time.time < startTime + flashDuration)
+            {
+                _opacity -= Time.deltaTime / flashDuration;
+                _outMat.SetFloat("_Opacity", _opacity);
+                _inMat.SetFloat("_Opacity", _opacity);
+
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        ResetOpacity();
+
+        fill = 0;
+        ApplyFill();
+
+        _doingAnimation = false;
+        StopDrawing();
+
+        _finishCircleCo = null;
+    }
+
+    private void ResetOpacity()
+    {
+        _opacity = 1;
+        _outMat.SetFloat("_Opacity", _opacity);
+        _inMat.SetFloat("_Opacity", _opacity);
     }
 
     private float CircleAngle()
