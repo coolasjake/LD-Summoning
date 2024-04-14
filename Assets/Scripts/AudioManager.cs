@@ -204,6 +204,24 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void MuteFadeOut(string soundName)
+    {
+        Sound sound = GetSound(soundName);
+
+        if (sound != null && sound.Source.mute == true)
+            return;
+
+        if (_volumeChangeCo != null)
+            StopCoroutine(_volumeChangeCo);
+
+        _volumeChangeCo = StartCoroutine(ChangeVolume(sound.Source, 1f, 0f, volumeRampTime, true));
+
+        if (sound != null && IsLastPlayed(sound, soundName))
+        {
+            sound.Source.mute = true;
+        }
+    }
+
     public void UnMute(string soundName)
     {
         Sound sound = GetSound(soundName);
@@ -216,6 +234,11 @@ public class AudioManager : MonoBehaviour
 
     public void UnMuteFadeIn(string soundName)
     {
+        /* Problems with this:
+         *      - Fading in tracks one at a time is fine, but multiple at a time doesn't work
+         *      - This doesn't take into account whatever volume was set in the editor
+         */
+
         Sound sound = GetSound(soundName);
 
         if (sound != null && sound.Source.mute == false)
@@ -229,7 +252,7 @@ public class AudioManager : MonoBehaviour
         if (_volumeChangeCo != null)
             StopCoroutine(_volumeChangeCo);
 
-        _volumeChangeCo = StartCoroutine(ChangeVolume(sound.Source, 0f, 1f, volumeRampTime));
+        _volumeChangeCo = StartCoroutine(ChangeVolume(sound.Source, 0f, 1f, volumeRampTime, false));
     }
 
     public void SetRampTime(float time)
@@ -237,7 +260,7 @@ public class AudioManager : MonoBehaviour
         pitchRampTime = time;
     }
 
-    private IEnumerator ChangeVolume(AudioSource source, float startVolume, float endVolume, float duration)
+    private IEnumerator ChangeVolume(AudioSource source, float startVolume, float endVolume, float duration, bool muteWhenDone)
     {
         source.volume = startVolume;
 
@@ -251,6 +274,10 @@ public class AudioManager : MonoBehaviour
         }
 
         source.volume = endVolume;
+
+        if (muteWhenDone && source.volume <= 0f)
+            source.mute = true;
+
         _volumeChangeCo = null;
     }
 

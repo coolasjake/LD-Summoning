@@ -19,6 +19,7 @@ public class ResourceGenerator: MonoBehaviour
     private void OnMouseDown()
     {
         GameManager.ManuallyGenerate(type);
+        ManualCollect.Invoke();
         print("MINING!!! " + type.ToString());
     }
 

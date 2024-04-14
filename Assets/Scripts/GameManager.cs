@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
 
     public UnityEvent StartMusic = new UnityEvent();
     public UnityEvent EndMusic = new UnityEvent();
-    public UnityEvent StartIntensity1 = new UnityEvent();
-    public UnityEvent StartIntensity2 = new UnityEvent();
-    public UnityEvent StartIntensity3 = new UnityEvent();
-    public UnityEvent StartIntensity4 = new UnityEvent();
+    public UnityEvent MusicIntensity1 = new UnityEvent();
+    public UnityEvent MusicIntensity2 = new UnityEvent();
+    public UnityEvent MusicIntensity3 = new UnityEvent();
+    public UnityEvent MusicIntensity4 = new UnityEvent();
 
     private MinionData[] minionsOptions;
     private List<Minion> minions = new List<Minion>();
@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
         }
 
         StartMusic.Invoke();
+        MusicIntensity1.Invoke();
     }
 
     void Start()
@@ -256,7 +257,29 @@ public class GameManager : MonoBehaviour
         else
             minionName.text = "???";
     }
+
+
+
+    public void SetMusicIntensity(int intensity)
+    {
+        switch (intensity)
+        {
+            case 1:
+                MusicIntensity1.Invoke();
+                break;
+            case 2:
+                MusicIntensity2.Invoke();
+                break;
+            case 3:
+                MusicIntensity3.Invoke();
+                break;
+            case 4:
+                MusicIntensity4.Invoke();
+                break;
+        }
+    }
 }
+
 public enum ResourceType
 {
     Blood,

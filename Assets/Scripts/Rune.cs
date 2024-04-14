@@ -28,6 +28,7 @@ public class Rune : MonoBehaviour
 
     private void OnMouseDown()
     {
+        ToggleRune();
     }
 
     private void ToggleRune()
