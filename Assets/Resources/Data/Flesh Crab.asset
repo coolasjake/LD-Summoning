@@ -17,7 +17,7 @@ MonoBehaviour:
   candlesCost: 0
   soulsCost: 50
   fleshCost: 0
-  discovered: 1
+  discovered: 0
   workType: 3
   resourcesPerWorkTick: 1
   moveSpeed: 2
