@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,7 +9,7 @@ public class AudioManager : MonoBehaviour
     #region Variables
     public bool stopSoundsWhenPaused = true;
     public float pitchRampTime = 1f;
-    public float volumeRampTime = 1f;
+    public float volumeRampTime = 3f;
     public List<Sound> sounds = new List<Sound>() { new Sound() };
     private List<string> blockedSounds = new List<string>();
     private Dictionary<AudioSource, string> lastPlayedSounds = new Dictionary<AudioSource, string>();
