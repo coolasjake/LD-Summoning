@@ -662,7 +662,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: INT_Chalk_DrawingLine
+          m_StringArgument: INT_Chalk_Drawing
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
@@ -3764,7 +3764,7 @@ GameObject:
   - component: {fileID: 1275224810}
   - component: {fileID: 1275224811}
   m_Layer: 0
-  m_Name: Drawing Line
+  m_Name: Drawing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6597,12 +6597,12 @@ MonoBehaviour:
     randomPitch: 1
     pitchMin: 0.9
     pitchMax: 1.2
-  - name: INT_Chalk_DrawingLine
+  - name: INT_Chalk_Drawing
     clips:
-    - {fileID: 8300000, guid: d714c7e91b6db234ebd24aa03f74488f, type: 3}
-    - {fileID: 8300000, guid: 1dd0631f1083bdd40b5ac061cb986927, type: 3}
-    - {fileID: 8300000, guid: f37a234d9b9343945a25805a9f0e197b, type: 3}
-    - {fileID: 8300000, guid: 349b67f715234ce4384f2a806175b847, type: 3}
+    - {fileID: 8300000, guid: 6ddeb1827101b2f4e87d07357ddb6ecc, type: 3}
+    - {fileID: 8300000, guid: fd6920df03cc6ec4eae75a2506b65bb8, type: 3}
+    - {fileID: 8300000, guid: fabab4248171c2e4a803e38c7b87ff33, type: 3}
+    - {fileID: 8300000, guid: 063af3536bd665144b6af7098962e421, type: 3}
     source: {fileID: 1275224811}
     randomPitch: 1
     pitchMin: 0.8
