@@ -3326,7 +3326,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 9018593014732325963, guid: c81e3761ead79a548b070b0b37c1b792, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4153,7 +4153,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: Mute
+        m_MethodName: UnMute
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
