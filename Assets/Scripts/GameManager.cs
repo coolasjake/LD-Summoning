@@ -6,17 +6,18 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static int[] resources = new int[4];
-
-    public static int blood;
-    public static int candles;
-    public static int souls;
-    public static int meat;
+    public static int[] workSpeeds = { 1, 1, 1, 1 };
 
     private static GameManager singleton;
 
-    public static void SetCombo(string runeCombo)
+    public static void SetRunes(string runeCombo)
     {
+        singleton.SetSummon(runeCombo);
+    }
 
+    public static bool CanSummon()
+    {
+        return singleton._canSummon;
     }
 
     public static void Summon()
@@ -24,26 +25,59 @@ public class GameManager : MonoBehaviour
         singleton.TrySummon();
     }
 
+    public static void ManuallyGenerate(ResourceType type)
+    {
+        if (type == ResourceType.Circle)
+            return;
 
+        resources[(int)type] += workSpeeds[(int)type];
+        Debug.Log(resources[(int)type] + ", added " + workSpeeds[(int)type]);
+        singleton.UpdateResourceCounts();
+        singleton.CheckCanSummon();
+    }
+
+    [Header("References")]
     public Circle circle;
-    public List<MinionData> minionsOptions = new List<MinionData>();
-    public List<Minion> minions = new List<Minion>();
-
-    public float workInterval = 1f;
-
+    public string minionDataFolder = "Data/AbilityData";
+    public Minion minionPrefab;
     public List<ResourceGenerator> generators = new List<ResourceGenerator>();
 
+    [Header("Settings")]
+    public float workInterval = 1f;
+
+    [Header("Costs")]
+    public TMP_Text minionName;
+
+    public Color cantAffordCol = Color.black;
+    public Color[] resourceCols = { Color.red, Color.yellow, Color.cyan, Color.gray };
     public TMP_Text bloodCost;
+    //public Color bloodCol = Color.red;
     public TMP_Text candlesCost;
+    //public Color candlesCol = Color.yellow;
     public TMP_Text soulsCost;
-    public TMP_Text meatCost;
+    //public Color soulsCol = Color.cyan;
+    public TMP_Text fleshCost;
+    //public Color fleshCol = Color.grey;
+
+    private MinionData[] minionsOptions;
+    private List<Minion> minions = new List<Minion>();
 
     private float _lastWork = 0;
     private MinionData _currentSummon = null;
+    private bool _canSummon = false;
 
     void Awake()
     {
         singleton = this;
+
+        LoadMinions();
+
+        foreach (ResourceGenerator generator in generators)
+        {
+            if (generator.type == ResourceType.Circle)
+                continue;
+            generator.display.color = resourceCols[(int)generator.type];
+        }
     }
 
     void Start()
@@ -51,9 +85,53 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void LoadMinions()
+    {
+        if (minionsOptions == null || minionsOptions.Length == 0)
+            minionsOptions = Resources.LoadAll<MinionData>(minionDataFolder);
+        if (minionsOptions.Length == 0)
+            Debug.LogError("No minions found at path: " + minionDataFolder);
+        else
+        {
+            _currentSummon = minionsOptions[0];
+            SetSummon("0000");
+            CheckCanSummon();
+        }    
+    }
+
+    private void SetSummon(string runeCombo)
+    {
+        _currentSummon = minionsOptions[0];
+
+        foreach (MinionData summon in minionsOptions)
+        {
+            if (summon.runeCombo == runeCombo)
+                _currentSummon = summon;
+        }
+
+        CheckCanSummon();
+    }
+
     private void TrySummon()
     {
+        if (_canSummon)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                resources[i] -= _currentSummon.Cost(i);
+            }
 
+            _currentSummon.discovered = true;
+
+            Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
+            newMinion.data = _currentSummon;
+            newMinion.SR.sprite = _currentSummon.minionSprite;
+            newMinion.SR.color = _currentSummon.testColor;
+            newMinion.SetGenerator(generators[(int)newMinion.data.workType]);
+            minions.Add(newMinion);
+        }
+
+        CheckCanSummon();
     }
 
     // Update is called once per frame
@@ -62,13 +140,13 @@ public class GameManager : MonoBehaviour
         if (Time.time > _lastWork + workInterval)
         {
             WorkTick();
+            CheckCanSummon();
             _lastWork += workInterval;
         }
     }
 
     private void WorkTick()
     {
-
         int[] work = new int[4];
 
         foreach (Minion minion in minions)
@@ -81,16 +159,92 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 4; ++i)
         {
+            print((ResourceType)i + " working for " + work[i] + " currently " + resources[i]);
             resources[i] += work[i];
         }
 
         foreach (ResourceGenerator generator in generators)
         {
+            if (generator.type == ResourceType.Circle)
+                continue;
+
             if (work[(int)generator.type] > 0)
             {
                 generator.WorkedAnimation();
             }
         }
+
+        for (int i = 0; i < 4; ++i)
+        {
+            work[i] = Mathf.Max(1, work[i]);
+        }
+
+        workSpeeds = work;
+
+        UpdateResourceCounts();
+    }
+
+    private void UpdateResourceCounts()
+    {
+        foreach (ResourceGenerator generator in generators)
+        {
+            if (generator.type == ResourceType.Circle)
+                continue;
+            generator.display.color = resourceCols[(int)generator.type];
+            generator.display.text = generator.type.ToString() + ":\n" + resources[(int)generator.type];
+        }
+    }
+
+    private void CheckCanSummon()
+    {
+        _canSummon = true;
+
+        if (_currentSummon.bloodCost > resources[(int)ResourceType.Blood])
+        {
+            _canSummon = false;
+            bloodCost.color = cantAffordCol;
+        }
+        else
+            bloodCost.color = resourceCols[(int)ResourceType.Blood];
+
+        if (_currentSummon.candlesCost > resources[(int)ResourceType.Candles])
+        {
+            _canSummon = false;
+            candlesCost.color = cantAffordCol;
+        }
+        else
+            candlesCost.color = resourceCols[(int)ResourceType.Candles];
+
+        if (_currentSummon.soulsCost > resources[(int)ResourceType.Souls])
+        {
+            _canSummon = false;
+            soulsCost.color = cantAffordCol;
+        }
+        else
+            soulsCost.color = resourceCols[(int)ResourceType.Souls];
+
+        if (_currentSummon.fleshCost > resources[(int)ResourceType.Flesh])
+        {
+            _canSummon = false;
+            fleshCost.color = cantAffordCol;
+        }
+        else
+            fleshCost.color = resourceCols[(int)ResourceType.Flesh];
+
+        bloodCost.text = "Blood:\n" + _currentSummon.bloodCost + " / " + resources[(int)ResourceType.Blood];
+        candlesCost.text = "Candles:\n" + _currentSummon.candlesCost + " / " + resources[(int)ResourceType.Candles];
+        soulsCost.text = "Souls:\n" + _currentSummon.soulsCost + " / " + resources[(int)ResourceType.Souls];
+        fleshCost.text = "Flesh:\n" + _currentSummon.fleshCost + " / " + resources[(int)ResourceType.Flesh];
+
+        if (_canSummon)
+            minionName.color = Color.white;
+        else
+            minionName.color = Color.red;
+
+        if (_currentSummon.discovered)
+            minionName.text = _currentSummon.name;
+        else
+            minionName.text = "???";
     }
 }
 public enum ResourceType
@@ -98,6 +252,6 @@ public enum ResourceType
     Blood,
     Candles,
     Souls,
-    Meat,
+    Flesh,
     Circle,
 }

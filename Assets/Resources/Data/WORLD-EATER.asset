@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f6689b6fc09774a97b5b8c8c104dd4, type: 3}
+  m_Name: WORLD-EATER
+  m_EditorClassIdentifier: 
+  runeCombo: 0001
+  bloodCost: 500
+  candlesCost: 500
+  soulsCost: 500
+  fleshCost: 500
+  discovered: 0
+  workType: 4
+  resourcesPerWorkTick: 1
+  minionSprite: {fileID: 21300000, guid: af1349db7e131a94ba59bf21e746f84c, type: 3}
+  testColor: {r: 1, g: 1, b: 1, a: 1}

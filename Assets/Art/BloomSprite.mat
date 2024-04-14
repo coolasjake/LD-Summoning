@@ -53,7 +53,7 @@ Material:
     - PixelSnap: 0
     - _Anticlockwise: 0
     - _EnableExternalAlpha: 0
-    - _Fill: 1
+    - _Fill: 0
     - _MaxFill: 0.7
     - _QueueControl: 0
     - _QueueOffset: 0
