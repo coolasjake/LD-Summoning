@@ -217,6 +217,9 @@ public class AudioManager : MonoBehaviour
     {
         Sound sound = GetSound(soundName);
 
+        if (sound != null && sound.Source.mute == false)
+            return;
+
         if (sound != null && IsLastPlayed(sound, soundName))
         {
             sound.Source.mute = false;
