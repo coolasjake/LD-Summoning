@@ -6605,7 +6605,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 063af3536bd665144b6af7098962e421, type: 3}
     source: {fileID: 1275224811}
     randomPitch: 1
-    pitchMin: 0.8
+    pitchMin: 0.9
     pitchMax: 1.2
   - name: INT_Chalk_Debris
     clips:
