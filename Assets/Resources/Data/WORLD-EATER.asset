@@ -20,5 +20,6 @@ MonoBehaviour:
   discovered: 0
   workType: 4
   resourcesPerWorkTick: 1
+  moveSpeed: 2
   minionSprite: {fileID: 21300000, guid: af1349db7e131a94ba59bf21e746f84c, type: 3}
   testColor: {r: 1, g: 1, b: 1, a: 1}
