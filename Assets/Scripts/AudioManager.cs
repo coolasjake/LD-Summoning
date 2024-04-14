@@ -8,10 +8,12 @@ public class AudioManager : MonoBehaviour
     #region Variables
     public bool stopSoundsWhenPaused = true;
     public float pitchRampTime = 1f;
+    public float volumeRampTime = 1f;
     public List<Sound> sounds = new List<Sound>() { new Sound() };
     private List<string> blockedSounds = new List<string>();
     private Dictionary<AudioSource, string> lastPlayedSounds = new Dictionary<AudioSource, string>();
     private Coroutine _pitchChangeCo;
+    private Coroutine _volumeChangeCo;
     #endregion
 
     #region Static (Pausing)
@@ -191,9 +193,64 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void Mute(string soundName)
+    {
+        Sound sound = GetSound(soundName);
+
+        if (sound != null && IsLastPlayed(sound, soundName))
+        {
+            sound.Source.mute = true;
+        }
+    }
+
+    public void UnMute(string soundName)
+    {
+        Sound sound = GetSound(soundName);
+
+        if (sound != null && IsLastPlayed(sound, soundName))
+        {
+            sound.Source.mute = false;
+        }
+    }
+
+    public void UnMuteFadeIn(string soundName)
+    {
+        Sound sound = GetSound(soundName);
+
+        if (sound != null && sound.Source.mute == false)
+            return;
+
+        if (sound != null && IsLastPlayed(sound, soundName))
+        {
+            sound.Source.mute = false;
+        }
+
+        if (_volumeChangeCo != null)
+            StopCoroutine(_volumeChangeCo);
+
+        _volumeChangeCo = StartCoroutine(ChangeVolume(sound.Source, 0f, 1f, volumeRampTime));
+    }
+
     public void SetRampTime(float time)
     {
         pitchRampTime = time;
+    }
+
+    private IEnumerator ChangeVolume(AudioSource source, float startVolume, float endVolume, float duration)
+    {
+        source.volume = startVolume;
+
+        float startTime = Time.time;
+        WaitForEndOfFrame wait = new WaitForEndOfFrame();
+        while (Time.time < startTime + duration)
+        {
+            float t = (Time.time - startTime) / duration;
+            source.volume = Mathf.Lerp(startVolume, endVolume, t);
+            yield return wait;
+        }
+
+        source.volume = endVolume;
+        _volumeChangeCo = null;
     }
 
     private IEnumerator ChangePitch(AudioSource source, float startPitch, float endPitch, float duration)
