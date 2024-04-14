@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Circle : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class Circle : MonoBehaviour
     public float flashDuration = 0.5f;
 
     public List<Rune> runes = new List<Rune>();
+
+    public UnityEvent StartDrawing = new UnityEvent();
+    public UnityEvent CancelDrawing = new UnityEvent();
+    public UnityEvent SummonSucceed = new UnityEvent();
+    public UnityEvent SummonFail = new UnityEvent();
 
     private Material _outMat;
     private Material _inMat;
@@ -109,6 +115,7 @@ public class Circle : MonoBehaviour
                 rune.ColliderOn = false;
         }
 
+        StartDrawing.Invoke();
         _drawing = true;
         ResetOpacity();
     }
@@ -133,6 +140,7 @@ public class Circle : MonoBehaviour
 
     private void StopDrawing()
     {
+        CancelDrawing.Invoke();
         _drawing = false;
         foreach (Rune rune in runes)
             rune.ColliderOn = true;
@@ -146,10 +154,12 @@ public class Circle : MonoBehaviour
         _startedDrawing = false;
         if (GameManager.CanSummon())
         {
+            SummonSucceed.Invoke();
             _finishCircleCo = StartCoroutine(SummonAnimation());
         }
         else
         {
+            SummonFail.Invoke();
             _finishCircleCo = StartCoroutine(SummonFailedAnimation());
         }
     }

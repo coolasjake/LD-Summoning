@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -59,6 +60,13 @@ public class GameManager : MonoBehaviour
     public TMP_Text fleshCost;
     //public Color fleshCol = Color.grey;
 
+    public UnityEvent StartMusic = new UnityEvent();
+    public UnityEvent EndMusic = new UnityEvent();
+    public UnityEvent StartIntensity1 = new UnityEvent();
+    public UnityEvent StartIntensity2 = new UnityEvent();
+    public UnityEvent StartIntensity3 = new UnityEvent();
+    public UnityEvent StartIntensity4 = new UnityEvent();
+
     private MinionData[] minionsOptions;
     private List<Minion> minions = new List<Minion>();
 
@@ -78,6 +86,8 @@ public class GameManager : MonoBehaviour
                 continue;
             generator.display.color = resourceCols[(int)generator.type];
         }
+
+        StartMusic.Invoke();
     }
 
     void Start()

@@ -485,6 +485,9 @@ MonoBehaviour:
   workRadius: 2
   orbitSpeed: 5
   numMinions: 0
+  ManualCollect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &239540076
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -615,6 +618,9 @@ MonoBehaviour:
   workRadius: 2
   orbitSpeed: 5
   numMinions: 0
+  ManualCollect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &333664430
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -695,6 +701,7 @@ GameObject:
   - component: {fileID: 380603869}
   - component: {fileID: 380603872}
   - component: {fileID: 380603871}
+  - component: {fileID: 380603873}
   m_Layer: 0
   m_Name: Blood_Bank
   m_TagString: Untagged
@@ -813,6 +820,43 @@ MonoBehaviour:
   workRadius: 2
   orbitSpeed: 5
   numMinions: 0
+  ManualCollect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 380603873}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &380603873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380603868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fac1bb3f3fa151408a9e1a8e35180ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stopSoundsWhenPaused: 1
+  pitchRampTime: 1
+  volumeRampTime: 1
+  sounds:
+  - name: 
+    clips: []
+    source: {fileID: 0}
+    randomPitch: 1
+    pitchMin: 1
+    pitchMax: 1
 --- !u!1 &467017184
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,6 +919,9 @@ MonoBehaviour:
   workRadius: 2
   orbitSpeed: 5
   numMinions: 0
+  ManualCollect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &467017187
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1352,6 +1399,12 @@ MonoBehaviour:
   SR: {fileID: 690706231}
   clickCollider: {fileID: 0}
   isOn: 0
+  RuneOn:
+    m_PersistentCalls:
+      m_Calls: []
+  RuneOff:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &730952769
 GameObject:
   m_ObjectHideFlags: 0
@@ -2328,6 +2381,12 @@ MonoBehaviour:
   SR: {fileID: 1267980585}
   clickCollider: {fileID: 0}
   isOn: 0
+  RuneOn:
+    m_PersistentCalls:
+      m_Calls: []
+  RuneOff:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1290708816
 GameObject:
   m_ObjectHideFlags: 0
@@ -3054,6 +3113,18 @@ MonoBehaviour:
   - {fileID: 1267980587}
   - {fileID: 690706233}
   - {fileID: 1847793791}
+  StartDrawing:
+    m_PersistentCalls:
+      m_Calls: []
+  CancelDrawing:
+    m_PersistentCalls:
+      m_Calls: []
+  SummonSucceed:
+    m_PersistentCalls:
+      m_Calls: []
+  SummonFail:
+    m_PersistentCalls:
+      m_Calls: []
   fill: 0
 --- !u!4 &1505308012
 Transform:
@@ -3107,6 +3178,9 @@ MonoBehaviour:
   workRadius: 3
   orbitSpeed: 0.01
   numMinions: 0
+  ManualCollect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1531023171
 GameObject:
   m_ObjectHideFlags: 0
@@ -3272,6 +3346,12 @@ MonoBehaviour:
   SR: {fileID: 1540602546}
   clickCollider: {fileID: 0}
   isOn: 0
+  RuneOn:
+    m_PersistentCalls:
+      m_Calls: []
+  RuneOff:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1711675096
 GameObject:
   m_ObjectHideFlags: 0
@@ -3646,6 +3726,12 @@ MonoBehaviour:
   SR: {fileID: 1847793789}
   clickCollider: {fileID: 0}
   isOn: 0
+  RuneOn:
+    m_PersistentCalls:
+      m_Calls: []
+  RuneOff:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1866136489
 GameObject:
   m_ObjectHideFlags: 0
@@ -3871,6 +3957,24 @@ MonoBehaviour:
   candlesCost: {fileID: 1866136491}
   soulsCost: {fileID: 761186346}
   fleshCost: {fileID: 1290708818}
+  StartMusic:
+    m_PersistentCalls:
+      m_Calls: []
+  EndMusic:
+    m_PersistentCalls:
+      m_Calls: []
+  StartIntensity1:
+    m_PersistentCalls:
+      m_Calls: []
+  StartIntensity2:
+    m_PersistentCalls:
+      m_Calls: []
+  StartIntensity3:
+    m_PersistentCalls:
+      m_Calls: []
+  StartIntensity4:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &2078996569
 Transform:
   m_ObjectHideFlags: 0
@@ -3900,6 +4004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stopSoundsWhenPaused: 1
   pitchRampTime: 1
+  volumeRampTime: 1
   sounds:
   - name: 
     clips: []

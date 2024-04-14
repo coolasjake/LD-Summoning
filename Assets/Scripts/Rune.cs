@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Rune : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class Rune : MonoBehaviour
     public Collider2D clickCollider;
 
     public bool isOn = false;
+
+    public UnityEvent RuneOn = new UnityEvent();
+    public UnityEvent RuneOff = new UnityEvent();
 
     void Start()
     {
@@ -24,11 +28,18 @@ public class Rune : MonoBehaviour
 
     private void OnMouseDown()
     {
+    }
+
+    private void ToggleRune()
+    {
         isOn = !isOn;
-
         SR.enabled = isOn;
-
         runePressed?.Invoke();
+
+        if (isOn)
+            RuneOn.Invoke();
+        else
+            RuneOff.Invoke();
     }
 
     public bool ColliderOn

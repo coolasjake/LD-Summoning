@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ResourceGenerator: MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ResourceGenerator: MonoBehaviour
     [HideInInspector]
     public int numMinions = 0;
     private int _minionsGivenAPos = 0;
+
+    public UnityEvent ManualCollect = new UnityEvent();
 
     private void OnMouseDown()
     {
