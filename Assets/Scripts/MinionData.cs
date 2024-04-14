@@ -5,17 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MinionData", menuName = "ScriptableObjects/MinionData", order = 1)]
 public class MinionData : ScriptableObject
 {
-    [Header("Circle Stats")]
-    public int inspirationCost = 1;
-    public int chalkCost = 1;
-    public int bloodCost = 0;
+    [Header("Summon Stats")]
+    public string runeCombo = "0000";
+    public static int bloodCost;
+    public static int candlesCost;
+    public static int soulsCost;
+    public static int sandwichesCost;
 
     [Header("Minion Stats")]
-    public float drawSpeed = 0.1f;
-    public float mineSpeed = 0.1f;
-    public float researchSpeed = 0.1f;
-    public int sacrificePower = 1;
+    public ResourceType workType = ResourceType.Blood;
+    public int resourcesPerWorkTick = 1;
 
-    public Sprite circleSprite;
     public GameObject minionPrefab;
+    public Color testColor = Color.white;
 }

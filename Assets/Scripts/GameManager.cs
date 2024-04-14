@@ -1,43 +1,103 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static int chalk;
-    public static int inspiration;
+    public static int[] resources = new int[4];
 
-    public static Minion GetSacrificeMinion()
-    {
-        //Get minion from prison
-        return null;
-    }
+    public static int blood;
+    public static int candles;
+    public static int souls;
+    public static int meat;
 
     private static GameManager singleton;
 
-    public List<Circle> circles = new List<Circle>();
-    public ResourceGenerator mine;
-    public ResourceGenerator library;
-    public Prison prison;
+    public static void SetCombo(string runeCombo)
+    {
+
+    }
+
+    public static void Summon()
+    {
+        singleton.TrySummon();
+    }
+
+
+    public Circle circle;
+    public List<MinionData> minionsOptions = new List<MinionData>();
     public List<Minion> minions = new List<Minion>();
+
+    public float workInterval = 1f;
+
+    public List<ResourceGenerator> generators = new List<ResourceGenerator>();
+
+    public TMP_Text bloodCost;
+    public TMP_Text candlesCost;
+    public TMP_Text soulsCost;
+    public TMP_Text meatCost;
+
+    private float _lastWork = 0;
+    private MinionData _currentSummon = null;
 
     void Awake()
     {
         singleton = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
+    private void TrySummon()
+    {
+
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        foreach (Minion minion in minions)
+        if (Time.time > _lastWork + workInterval)
         {
-            minion.Work();
+            WorkTick();
+            _lastWork += workInterval;
         }
     }
+
+    private void WorkTick()
+    {
+
+        int[] work = new int[4];
+
+        foreach (Minion minion in minions)
+        {
+            if (minion.data.workType == ResourceType.Circle)
+                continue;
+
+            work[(int)minion.data.workType] += minion.data.resourcesPerWorkTick;
+        }
+
+        for (int i = 0; i < 4; ++i)
+        {
+            resources[i] += work[i];
+        }
+
+        foreach (ResourceGenerator generator in generators)
+        {
+            if (work[(int)generator.type] > 0)
+            {
+                generator.WorkedAnimation();
+            }
+        }
+    }
+}
+public enum ResourceType
+{
+    Blood,
+    Candles,
+    Souls,
+    Meat,
+    Circle,
 }
