@@ -191,6 +191,26 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void Mute(string soundName)
+    {
+        Sound sound = GetSound(soundName);
+
+        if (sound != null && IsLastPlayed(sound, soundName))
+        {
+            sound.Source.mute = true;
+        }
+    }
+
+    public void UnMute(string soundName)
+    {
+        Sound sound = GetSound(soundName);
+
+        if (sound != null && IsLastPlayed(sound, soundName))
+        {
+            sound.Source.mute = false;
+        }
+    }
+
     public void SetRampTime(float time)
     {
         pitchRampTime = time;
