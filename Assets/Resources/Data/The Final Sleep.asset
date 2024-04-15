@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82f6689b6fc09774a97b5b8c8c104dd4, type: 3}
-  m_Name: WORLD-EATER
+  m_Name: The Final Sleep
   m_EditorClassIdentifier: 
-  runeCombo: 1111
-  bloodCost: 1000000000
-  candlesCost: 1000000000
-  soulsCost: 1000000000
-  fleshCost: 1000000000
-  drawTime: 1000000
-  discovered: 0
-  workType: 6
-  resourcesPerWorkTick: 0
-  moveSpeed: 16
-  minionSprite: {fileID: 365562303, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
+  runeCombo: 1101
+  bloodCost: 0
+  candlesCost: 10000
+  soulsCost: 10000
+  fleshCost: 10000
+  drawTime: 10000
+  discovered: 1
+  workType: 4
+  resourcesPerWorkTick: 100
+  moveSpeed: 9
+  minionSprite: {fileID: 13854462, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 1, b: 1, a: 1}

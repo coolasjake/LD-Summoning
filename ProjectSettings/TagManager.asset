@@ -38,12 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
+  - name: Background
+    uniqueID: 1377923711
     locked: 0
   - name: Circles
     uniqueID: 3256559391
     locked: 0
   - name: Minions
     uniqueID: 1868491639
+    locked: 0
+  - name: ResourceStations
+    uniqueID: 1826625697
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0

@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82f6689b6fc09774a97b5b8c8c104dd4, type: 3}
-  m_Name: Soul Crab
+  m_Name: The BOMB
   m_EditorClassIdentifier: 
-  runeCombo: 1000
-  bloodCost: 0
-  candlesCost: 20
-  soulsCost: 0
+  runeCombo: 1100
+  bloodCost: 32
+  candlesCost: 64
+  soulsCost: 128
   fleshCost: 0
+  drawTime: 100
   discovered: 0
-  workType: 2
-  resourcesPerWorkTick: 1
-  moveSpeed: 2
-  minionSprite: {fileID: 21300000, guid: af1349db7e131a94ba59bf21e746f84c, type: 3}
-  testColor: {r: 0, g: 0.7933049, b: 1, a: 1}
+  workType: 3
+  resourcesPerWorkTick: 15
+  moveSpeed: 12
+  minionSprite: {fileID: 1650545580, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
+  description: 
+  testColor: {r: 0.9056604, g: 0.64095515, b: 0.46564615, a: 1}

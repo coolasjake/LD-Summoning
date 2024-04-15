@@ -11,7 +11,7 @@ public class ResourceGenerator: MonoBehaviour
     public float workRadius = 2f;
     public float orbitSpeed = 0.01f;
     [HideInInspector]
-    public int numMinions = 0;
+    public List<Minion> minions = new List<Minion>();
     private int _minionsGivenAPos = 0;
 
     public UnityEvent ManualCollect = new UnityEvent();
@@ -20,7 +20,6 @@ public class ResourceGenerator: MonoBehaviour
     {
         GameManager.ManuallyGenerate(type);
         ManualCollect.Invoke();
-        print("MINING!!! " + type.ToString());
     }
 
     public void WorkedAnimation()
@@ -33,9 +32,16 @@ public class ResourceGenerator: MonoBehaviour
         _minionsGivenAPos = 0;
     }
 
+    public void UpdateLevels()
+    {
+
+    }
+
     public Vector3 MinionWorkPos()
     {
-        float angle = (_minionsGivenAPos / (float)numMinions) * 360f;
+        float angle = 0;
+        if (minions.Count > 0)
+            angle = (_minionsGivenAPos / (float)minions.Count) * 360f;
         angle = (angle + Time.time * orbitSpeed) % 360f;
         Vector3 orbitPos = (Quaternion.Euler(0f, 0f, angle) * Vector3.up) * workRadius;
         Vector3 target = transform.position + orbitPos;

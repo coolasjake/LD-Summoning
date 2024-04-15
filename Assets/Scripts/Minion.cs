@@ -4,21 +4,35 @@ using UnityEngine;
 
 public class Minion : MonoBehaviour
 {
+    private bool isTemp = true;
     public SpriteRenderer SR;
     public MinionData data;
     public ResourceGenerator generator;
 
-    public void SetGenerator(ResourceGenerator gen)
+    public void Setup(MinionData minData, ResourceGenerator gen, bool temp)
     {
+        data = minData;
+        isTemp = temp;
+        SR.sprite = data.minionSprite;
+        SR.color = data.testColor;
         generator = gen;
-        generator.numMinions += 1;
+        if (isTemp == false)
+            generator.minions.Add(this);
     }
 
     private void Update()
     {
-        if (generator == null)
-            transform.position = Vector3.MoveTowards(transform.position, Vector3.one * 100f, data.moveSpeed * Time.deltaTime);
-        else
-            transform.position = Vector3.MoveTowards(transform.position, generator.MinionWorkPos(), data.moveSpeed * Time.deltaTime);
+        Vector3 target = Vector3.one * 100f;
+        if (generator != null)
+            target = generator.MinionWorkPos();
+        
+        transform.position = Vector3.MoveTowards(transform.position, target, data.moveSpeed * Time.deltaTime);
+        if (isTemp && transform.position == target)
+            AbsorbAndLevel();
+    }
+
+    private void AbsorbAndLevel()
+    {
+        Destroy(gameObject);
     }
 }

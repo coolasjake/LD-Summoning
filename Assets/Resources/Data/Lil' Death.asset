@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82f6689b6fc09774a97b5b8c8c104dd4, type: 3}
-  m_Name: WORLD-EATER
+  m_Name: Lil' Death
   m_EditorClassIdentifier: 
-  runeCombo: 1111
-  bloodCost: 1000000000
-  candlesCost: 1000000000
-  soulsCost: 1000000000
-  fleshCost: 1000000000
-  drawTime: 1000000
+  runeCombo: 0101
+  bloodCost: 1024
+  candlesCost: 2000
+  soulsCost: 0
+  fleshCost: 0
+  drawTime: 1000
   discovered: 0
-  workType: 6
-  resourcesPerWorkTick: 0
-  moveSpeed: 16
-  minionSprite: {fileID: 365562303, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
+  workType: 2
+  resourcesPerWorkTick: 300
+  moveSpeed: 15
+  minionSprite: {fileID: 737251724, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
-  testColor: {r: 1, g: 1, b: 1, a: 1}
+  testColor: {r: 0.85506403, g: 0.987707, b: 0.990566, a: 1}

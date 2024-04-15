@@ -8,7 +8,8 @@ using UnityEngine.Audio;
 public class GameManager : MonoBehaviour
 {
     public static int[] resources = new int[4];
-    public static int[] workSpeeds = { 1, 1, 1, 1 };
+    public static int[] workSpeed = new int[4];
+    public static int[] manualWork = { 1, 1, 1, 1 };
 
     private static GameManager singleton;
 
@@ -29,11 +30,23 @@ public class GameManager : MonoBehaviour
 
     public static void ManuallyGenerate(ResourceType type)
     {
-        if (type == ResourceType.Circle)
+        //DEBUG CODE TO TEST LARGE NUMBERS
+        if (type == ResourceType.Multiplier)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                resources[i] += Mathf.Max(resources[i], 1000);
+            }
+            singleton.UpdateResourceCounts();
+            singleton.CheckCanSummon();
+        }
+        //END DEBUG CODE
+
+        if ((int)type >= 4)
             return;
 
-        resources[(int)type] += workSpeeds[(int)type];
-        Debug.Log(resources[(int)type] + ", added " + workSpeeds[(int)type]);
+        resources[(int)type] += manualWork[(int)type];
+        Debug.Log(resources[(int)type] + ", added " + manualWork[(int)type]);
         singleton.UpdateResourceCounts();
         singleton.CheckCanSummon();
     }
@@ -72,6 +85,7 @@ public class GameManager : MonoBehaviour
     public AudioMixerSnapshot snapshotEnd;
 
     private MinionData[] minionsOptions;
+    private List<MinionWorkData> workData = new List<MinionWorkData>();
     private List<Minion> minions = new List<Minion>();
 
     private float _lastWork = 0;
@@ -86,7 +100,7 @@ public class GameManager : MonoBehaviour
 
         foreach (ResourceGenerator generator in generators)
         {
-            if (generator.type == ResourceType.Circle)
+            if ((int)generator.type >= 4)
                 continue;
             generator.display.color = resourceCols[(int)generator.type];
         }
@@ -135,6 +149,8 @@ public class GameManager : MonoBehaviour
     {
         if (_canSummon)
         {
+            Debug.Log("Summoning " + _currentSummon.name);
+
             for (int i = 0; i < 4; ++i)
             {
                 resources[i] -= _currentSummon.Cost(i);
@@ -142,12 +158,28 @@ public class GameManager : MonoBehaviour
 
             _currentSummon.discovered = true;
 
-            Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
-            newMinion.data = _currentSummon;
-            newMinion.SR.sprite = _currentSummon.minionSprite;
-            newMinion.SR.color = _currentSummon.testColor;
-            newMinion.SetGenerator(generators[(int)newMinion.data.workType]);
-            minions.Add(newMinion);
+            int workIndex = workData.FindIndex(X => X.data == _currentSummon);
+            if (workIndex == -1)
+            {
+                workData.Add(new MinionWorkData(_currentSummon));
+                workIndex = workData.Count - 1;
+            }
+
+            bool isTempMinion = workData[workIndex].Summon();
+            
+            if (_currentSummon.workType == ResourceType.All)
+            {
+                for (int i = 0; i < 4; ++i)
+                {
+                    Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
+                    newMinion.Setup(_currentSummon, generators[i], isTempMinion);
+                }
+            }
+            else
+            {
+                Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
+                newMinion.Setup(_currentSummon, generators[(int)_currentSummon.workType], isTempMinion);
+            }
         }
 
         CheckCanSummon();
@@ -167,24 +199,36 @@ public class GameManager : MonoBehaviour
     private void WorkTick()
     {
         int[] work = new int[4];
+        float multiplier = 100f;
 
-        foreach (Minion minion in minions)
+        //Calculate values
+        foreach (MinionWorkData minion in workData)
         {
-            if (minion.data.workType == ResourceType.Circle)
-                continue;
-
-            work[(int)minion.data.workType] += minion.data.resourcesPerWorkTick;
+            if ((int)minion.WorkType < 4)
+                work[(int)minion.WorkType] += minion.WorkSpeed;
+            else if (minion.WorkType == ResourceType.All)
+            {
+                for (int i = 0; i < 4; ++i)
+                    work[i] += minion.WorkSpeed;
+            }
+            else
+                multiplier += minion.WorkSpeed;
         }
 
+        //Apply bonus
+        for (int i = 0; i < 4; ++i)
+            work[i] = Mathf.RoundToInt(work[i] * (multiplier * 0.01f));
+
+        //Add work to resources
         for (int i = 0; i < 4; ++i)
         {
-            print((ResourceType)i + " working for " + work[i] + " currently " + resources[i]);
             resources[i] += work[i];
         }
 
+        //Play worked animations
         foreach (ResourceGenerator generator in generators)
         {
-            if (generator.type == ResourceType.Circle)
+            if ((int)generator.type >= 4)
                 continue;
 
             if (work[(int)generator.type] > 0)
@@ -193,12 +237,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
         for (int i = 0; i < 4; ++i)
         {
-            work[i] = Mathf.Max(1, work[i]);
+            workSpeed[i] = work[i];
         }
 
-        workSpeeds = work;
+        //Calculate manual work value
+        for (int i = 0; i < 4; ++i)
+        {
+            manualWork[i] = Mathf.Max(1, work[i]);
+        }
 
         UpdateResourceCounts();
     }
@@ -207,10 +256,11 @@ public class GameManager : MonoBehaviour
     {
         foreach (ResourceGenerator generator in generators)
         {
-            if (generator.type == ResourceType.Circle)
+            int type = (int)generator.type;
+            if (type >= 4)
                 continue;
-            generator.display.color = resourceCols[(int)generator.type];
-            generator.display.text = generator.type.ToString() + ":\n" + resources[(int)generator.type];
+            generator.display.color = resourceCols[type];
+            generator.display.text = generator.type.ToString() + ":\n" + resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
         }
     }
 
@@ -218,7 +268,17 @@ public class GameManager : MonoBehaviour
     {
         _canSummon = true;
 
-        if (_currentSummon.bloodCost > resources[(int)ResourceType.Blood])
+        bloodCost.text = "Blood:\n" + _currentSummon.bloodCost.Shorthand() + " / " + resources[(int)ResourceType.Blood].Shorthand();
+        candlesCost.text = "Candles:\n" + _currentSummon.candlesCost.Shorthand() + " / " + resources[(int)ResourceType.Candles].Shorthand();
+        soulsCost.text = "Souls:\n" + _currentSummon.soulsCost.Shorthand() + " / " + resources[(int)ResourceType.Souls].Shorthand();
+        fleshCost.text = "Flesh:\n" + _currentSummon.fleshCost.Shorthand() + " / " + resources[(int)ResourceType.Flesh].Shorthand();
+
+        //Blood
+        if (_currentSummon.bloodCost <= 0)
+        {
+            bloodCost.text = "";
+        }
+        else if (_currentSummon.bloodCost > resources[(int)ResourceType.Blood])
         {
             _canSummon = false;
             bloodCost.color = cantAffordCol;
@@ -226,7 +286,12 @@ public class GameManager : MonoBehaviour
         else
             bloodCost.color = resourceCols[(int)ResourceType.Blood];
 
-        if (_currentSummon.candlesCost > resources[(int)ResourceType.Candles])
+        //Candles
+        if (_currentSummon.candlesCost <= 0)
+        {
+            candlesCost.text = "";
+        }
+        else if (_currentSummon.candlesCost > resources[(int)ResourceType.Candles])
         {
             _canSummon = false;
             candlesCost.color = cantAffordCol;
@@ -234,7 +299,12 @@ public class GameManager : MonoBehaviour
         else
             candlesCost.color = resourceCols[(int)ResourceType.Candles];
 
-        if (_currentSummon.soulsCost > resources[(int)ResourceType.Souls])
+        //Souls
+        if (_currentSummon.soulsCost <= 0)
+        {
+            soulsCost.text = "";
+        }
+        else if (_currentSummon.soulsCost > resources[(int)ResourceType.Souls])
         {
             _canSummon = false;
             soulsCost.color = cantAffordCol;
@@ -242,18 +312,18 @@ public class GameManager : MonoBehaviour
         else
             soulsCost.color = resourceCols[(int)ResourceType.Souls];
 
-        if (_currentSummon.fleshCost > resources[(int)ResourceType.Flesh])
+        //Flesh
+        if (_currentSummon.fleshCost <= 0)
+        {
+            fleshCost.text = "";
+        }
+        else if (_currentSummon.fleshCost > resources[(int)ResourceType.Flesh])
         {
             _canSummon = false;
             fleshCost.color = cantAffordCol;
         }
         else
             fleshCost.color = resourceCols[(int)ResourceType.Flesh];
-
-        bloodCost.text = "Blood:\n" + _currentSummon.bloodCost + " / " + resources[(int)ResourceType.Blood];
-        candlesCost.text = "Candles:\n" + _currentSummon.candlesCost + " / " + resources[(int)ResourceType.Candles];
-        soulsCost.text = "Souls:\n" + _currentSummon.soulsCost + " / " + resources[(int)ResourceType.Souls];
-        fleshCost.text = "Flesh:\n" + _currentSummon.fleshCost + " / " + resources[(int)ResourceType.Flesh];
 
         if (_canSummon)
             minionName.color = Color.white;
@@ -292,6 +362,67 @@ public class GameManager : MonoBehaviour
         snapshotEnd.TransitionTo(0.1f);
         EndMusic.Invoke();
     }
+
+    private class MinionWorkData
+    {
+        public MinionData data;
+        public ResourceType workType = ResourceType.Blood;
+        public int count = 0;
+        public int level = 1;
+
+        public int WorkSpeed => data.resourcesPerWorkTick * level * count;
+        public ResourceType WorkType => data.workType;
+
+        public MinionWorkData(MinionData summonData)
+        {
+            data = summonData;
+        }
+
+        public bool Summon()
+        {
+            if (count < 3)
+            {
+                count += 1;
+                return false;
+            }
+            else
+                level += 1;
+            return true;
+        }
+    }
+}
+
+public static class Utility
+{
+    public static string Shorthand(this int number)
+    {
+        return Shorthand((float)number);
+    }
+
+    public static string Shorthand(this float number)
+    {
+        //0-999
+        if (number < 1000)
+            return number.DecimalPlaces(0).ToString();
+        //1k-999k
+        if (number < 1000000)
+            return (number / 1000f).DecimalPlaces(0) + "K";
+        //1m-999m
+        if (number < 1000000000)
+            return (number / 1000000f).DecimalPlaces(0) + "M";
+        //1b-999b
+        if (number < 1000000000000)
+            return (number / 1000000000f).DecimalPlaces(0) + "B";
+        //>1t
+        return (number / 1000000000000f).DecimalPlaces(0) + "T";
+    }
+
+    public static float DecimalPlaces(this float value, int numPlaces)
+    {
+        numPlaces = Mathf.Clamp(numPlaces, 0, 10);
+        float multiplier = Mathf.Pow(10, numPlaces);
+        return Mathf.Round(value * multiplier) / multiplier;
+    }
 }
 
 public enum ResourceType
@@ -301,4 +432,6 @@ public enum ResourceType
     Souls,
     Flesh,
     Circle,
+    Multiplier,
+    All
 }

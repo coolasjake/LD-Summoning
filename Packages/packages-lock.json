@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.ligofff.asset-icons": {
+      "version": "https://github.com/ligofff/SimpleTools-CustomSOIcons.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ffa31e528d675bd6047d94f8b018a209dbdf83b4"
+    },
     "com.unity.2d.animation": {
       "version": "7.1.0",
       "depth": 1,
