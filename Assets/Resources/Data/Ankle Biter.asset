@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Ankle Biter
   m_EditorClassIdentifier: 
   runeCombo: 0000
+  tier: 0
   bloodCost: 1
   candlesCost: 1
   soulsCost: 1
   fleshCost: 1
-  drawTime: 0
-  discovered: 0
+  drawTime: 10
+  numLoops: 1
+  discovered: 1
+  maxCount: 3
   workType: 0
   resourcesPerWorkTick: 1
   moveSpeed: 16
   minionSprite: {fileID: 1422839228, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 0.8254717, b: 0.8254717, a: 1}
+  summonSounds: []

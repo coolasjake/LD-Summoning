@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Limb Ripper
   m_EditorClassIdentifier: 
   runeCombo: 0011
+  tier: 4
   bloodCost: 256
   candlesCost: 0
   soulsCost: 0
   fleshCost: 1000
   drawTime: 1000
+  numLoops: 4
   discovered: 0
+  maxCount: 3
   workType: 3
   resourcesPerWorkTick: 100
   moveSpeed: 12
   minionSprite: {fileID: -48633241, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.9056604, g: 0.64095515, b: 0.46564615, a: 1}
+  summonSounds: []

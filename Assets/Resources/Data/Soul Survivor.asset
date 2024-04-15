@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Soul Survivor
   m_EditorClassIdentifier: 
   runeCombo: 1010
+  tier: 2
   bloodCost: 16
   candlesCost: 200
   soulsCost: 0
   fleshCost: 50
   drawTime: 100
-  discovered: 1
+  numLoops: 2
+  discovered: 0
+  maxCount: 3
   workType: 2
   resourcesPerWorkTick: 10
   moveSpeed: 20
   minionSprite: {fileID: 1470639164, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.85506403, g: 0.987707, b: 0.990566, a: 1}
+  summonSounds: []

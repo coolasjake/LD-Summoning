@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Wax Golem
   m_EditorClassIdentifier: 
   runeCombo: 1001
+  tier: 4
   bloodCost: 512
   candlesCost: 50
   soulsCost: 50
   fleshCost: 500
   drawTime: 1000
+  numLoops: 4
   discovered: 0
+  maxCount: 3
   workType: 1
   resourcesPerWorkTick: 200
   moveSpeed: 10
   minionSprite: {fileID: -384222372, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 0.9662839, b: 0.8632076, a: 1}
+  summonSounds: []

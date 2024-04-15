@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: The BOMB
   m_EditorClassIdentifier: 
   runeCombo: 1100
+  tier: 2
   bloodCost: 32
   candlesCost: 64
   soulsCost: 128
   fleshCost: 0
   drawTime: 100
+  numLoops: 2
   discovered: 0
+  maxCount: 3
   workType: 3
   resourcesPerWorkTick: 15
   moveSpeed: 12
   minionSprite: {fileID: 1650545580, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.9056604, g: 0.64095515, b: 0.46564615, a: 1}
+  summonSounds: []

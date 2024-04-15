@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Jeff
   m_EditorClassIdentifier: 
   runeCombo: 1011
-  tier: 0
+  tier: 6
   bloodCost: 100000
   candlesCost: 100000
   soulsCost: 100000
   fleshCost: 100000
   drawTime: 10000
-  numLoops: 1
+  numLoops: 6
   discovered: 0
   maxCount: 3
   workType: 5
@@ -28,3 +28,4 @@ MonoBehaviour:
   minionSprite: {fileID: 23069836, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 1, b: 1, a: 1}
+  summonSounds: []

@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: REX
   m_EditorClassIdentifier: 
   runeCombo: 0010
+  tier: 1
   bloodCost: 8
   candlesCost: 20
   soulsCost: 50
   fleshCost: 0
   drawTime: 20
-  discovered: 1
+  numLoops: 1
+  discovered: 0
+  maxCount: 3
   workType: 3
   resourcesPerWorkTick: 4
   moveSpeed: 16
   minionSprite: {fileID: -902115388, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.9056604, g: 0.64095515, b: 0.46564615, a: 1}
+  summonSounds: []

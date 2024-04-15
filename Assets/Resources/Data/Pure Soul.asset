@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Pure Soul
   m_EditorClassIdentifier: 
   runeCombo: 0100
+  tier: 1
   bloodCost: 4
   candlesCost: 100
   soulsCost: 0
   fleshCost: 0
   drawTime: 20
+  numLoops: 1
   discovered: 0
+  maxCount: 3
   workType: 2
   resourcesPerWorkTick: 3
   moveSpeed: 16
   minionSprite: {fileID: -239267100, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.85506403, g: 0.987707, b: 0.990566, a: 1}
+  summonSounds: []

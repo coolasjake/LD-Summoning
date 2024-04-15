@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     private float _lastWork = 0;
     private MinionWorkData _currentSummon = null;
     private bool _canSummon = false;
+    private int _highestTier = 1;
 
     void Awake()
     {
@@ -178,6 +179,12 @@ public class GameManager : MonoBehaviour
             {
                 Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
                 newMinion.Setup(_currentSummon.data, generators[(int)_currentSummon.data.workType], isTempMinion);
+            }
+
+            if (_currentSummon.data.tier > _highestTier)
+            {
+                _highestTier = _currentSummon.data.tier;
+                SetMusicIntensity(_highestTier);
             }
         }
 

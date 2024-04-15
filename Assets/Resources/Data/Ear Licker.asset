@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Ear Licker
   m_EditorClassIdentifier: 
   runeCombo: 0110
+  tier: 2
   bloodCost: 64
   candlesCost: 0
   soulsCost: 0
   fleshCost: 500
   drawTime: 100
+  numLoops: 2
   discovered: 0
+  maxCount: 3
   workType: 1
   resourcesPerWorkTick: 20
   moveSpeed: 25
   minionSprite: {fileID: 678603162, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 0.9662839, b: 0.8632076, a: 1}
+  summonSounds: []

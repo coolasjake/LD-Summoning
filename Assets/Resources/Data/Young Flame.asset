@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Young Flame
   m_EditorClassIdentifier: 
   runeCombo: 0001
+  tier: 3
   bloodCost: 128
   candlesCost: 128
   soulsCost: 128
   fleshCost: 128
   drawTime: 200
-  discovered: 0
+  numLoops: 3
+  discovered: 1
+  maxCount: 3
   workType: 4
   resourcesPerWorkTick: 1
   moveSpeed: 16
   minionSprite: {fileID: 671976526, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.8235294, g: 1, b: 0.8575363, a: 1}
+  summonSounds: []

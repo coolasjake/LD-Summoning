@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: The Final Sleep
   m_EditorClassIdentifier: 
   runeCombo: 1101
+  tier: 6
   bloodCost: 0
   candlesCost: 10000
   soulsCost: 10000
   fleshCost: 10000
   drawTime: 10000
-  discovered: 1
+  numLoops: 6
+  discovered: 0
+  maxCount: 3
   workType: 4
   resourcesPerWorkTick: 100
   moveSpeed: 9
   minionSprite: {fileID: 13854462, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 1, b: 1, a: 1}
+  summonSounds: []

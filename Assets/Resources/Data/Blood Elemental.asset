@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Blood Elemental
   m_EditorClassIdentifier: 
   runeCombo: 0111
+  tier: 5
   bloodCost: 0
   candlesCost: 1000
   soulsCost: 1000
   fleshCost: 1000
   drawTime: 2000
+  numLoops: 5
   discovered: 0
+  maxCount: 3
   workType: 0
   resourcesPerWorkTick: 1000
   moveSpeed: 40
   minionSprite: {fileID: -1058403051, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
+  summonSounds: []

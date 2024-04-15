@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Lil' Death
   m_EditorClassIdentifier: 
   runeCombo: 0101
+  tier: 4
   bloodCost: 1024
   candlesCost: 2000
   soulsCost: 0
   fleshCost: 0
   drawTime: 1000
+  numLoops: 4
   discovered: 0
+  maxCount: 3
   workType: 2
   resourcesPerWorkTick: 300
   moveSpeed: 15
   minionSprite: {fileID: 737251724, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 0.85506403, g: 0.987707, b: 0.990566, a: 1}
+  summonSounds: []
