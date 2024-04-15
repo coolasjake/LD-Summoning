@@ -29,7 +29,8 @@ public class MinionData : ScriptableObject
     [TextArea(4, 10)]
     public string description = "";
     public Color testColor = Color.white;
-    public AudioClip[] summonSounds;
+    public AudioClip[] summonSound;
+    public AudioClip[] summonSoundExtra;
 
     public int Cost(int resourceIndex)
     {

@@ -7576,6 +7576,7 @@ MonoBehaviour:
   outerCircle: {fileID: 1221444824}
   innerCircle: {fileID: 992783995}
   flashDuration: 0.5
+  maxAnglePerSecond: 720
   runes:
   - {fileID: 1322315063}
   - {fileID: 1402401323}
@@ -8262,7 +8263,7 @@ GameObject:
   - component: {fileID: 1661381479}
   - component: {fileID: 1661381480}
   m_Layer: 0
-  m_Name: Timpanis
+  m_Name: Percussion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9909,7 +9910,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
@@ -9957,7 +9958,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
@@ -10005,7 +10006,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
   EndMusic:
@@ -10056,7 +10057,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
@@ -10131,7 +10132,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
   MusicIntensity2:
@@ -10182,7 +10183,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
   MusicIntensity3:
@@ -10233,7 +10234,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
   MusicIntensity4:
@@ -10284,7 +10285,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MUS_Timpanis
+          m_StringArgument: MUS_Percussion
           m_BoolArgument: 0
         m_CallState: 2
   snapshotMain: {fileID: 24500006, guid: c81e3761ead79a548b070b0b37c1b792, type: 2}
@@ -10341,9 +10342,9 @@ MonoBehaviour:
     randomPitch: 0
     pitchMin: 1
     pitchMax: 1
-  - name: MUS_Timpanis
+  - name: MUS_Percussion
     clips:
-    - {fileID: 8300000, guid: 96097ed844bfa614ca03695d806248b5, type: 3}
+    - {fileID: 8300000, guid: 6915fcc7935fcc743bf35c74ae1ccc9a, type: 3}
     source: {fileID: 1661381480}
     randomPitch: 0
     pitchMin: 1
