@@ -274,7 +274,7 @@ public class GameManager : MonoBehaviour
             if (type >= 4)
                 continue;
             generator.display.color = resourceCols[type];
-            generator.display.text = resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
+            generator.display.text = resources[type].Shorthand() + " (" + workSpeed[type].Shorthand() + "/s)";
             //generator.display.text = "<sprite name=\"" + generator.type.ToString() + "\">" + resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
         }
     }
