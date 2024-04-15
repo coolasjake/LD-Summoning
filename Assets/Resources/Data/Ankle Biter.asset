@@ -18,7 +18,7 @@ MonoBehaviour:
   candlesCost: 1
   soulsCost: 1
   fleshCost: 1
-  drawTime: 0
+  drawTime: 10
   numLoops: 1
   discovered: 1
   maxCount: 3
@@ -28,4 +28,5 @@ MonoBehaviour:
   minionSprite: {fileID: 1422839228, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 0.8254717, b: 0.8254717, a: 1}
-  summonSounds: []
+  summonSound: []
+  summonSoundExtra: []
