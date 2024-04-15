@@ -18,7 +18,7 @@ MonoBehaviour:
   candlesCost: 1
   soulsCost: 1
   fleshCost: 1
-  drawTime: 10
+  drawTime: 0
   numLoops: 1
   discovered: 1
   maxCount: 3
