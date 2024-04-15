@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using Ligofff.CustomSOIcons;
 
 [CreateAssetMenu(fileName = "MinionData", menuName = "ScriptableObjects/MinionData", order = 1)]
@@ -25,6 +26,7 @@ public class MinionData : ScriptableObject
     [TextArea(4, 10)]
     public string description = "";
     public Color testColor = Color.white;
+    public AudioClip[] summonSound;
 
     public int Cost(int resourceIndex)
     {
