@@ -4,12 +4,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Audio;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    public static int[] resources = new int[4];
-    public static int[] workSpeed = new int[4];
-    public static int[] manualWork = { 1, 1, 1, 1 };
+    public static long[] resources = new long[4];
+    public static long[] workSpeed = new long[4];
+    public static long[] manualWork = { 1, 1, 1, 1 };
 
     private static GameManager singleton;
 
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < 4; ++i)
             {
-                resources[i] += Mathf.Max(resources[i], 1000);
+                resources[i] += Math.Max(resources[i], 1000);
             }
             singleton.UpdateResourceCounts();
             singleton.CheckCanSummon();
@@ -275,7 +276,7 @@ public class GameManager : MonoBehaviour
             if (type >= 4)
                 continue;
             generator.display.color = resourceCols[type];
-            generator.display.text = generator.type.ToString() + ":\n" + resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
+            generator.display.text = "<sprite name=\"" + generator.type.ToString() + "\">" + resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
         }
     }
 
@@ -288,10 +289,10 @@ public class GameManager : MonoBehaviour
         int sCost = GetCost(ResourceType.Souls);
         int fCost = GetCost(ResourceType.Flesh);
 
-        bloodCost.text = "Blood:\n" + bCost.Shorthand() + " / " + resources[(int)ResourceType.Blood].Shorthand();
-        candlesCost.text = "Candles:\n" + cCost.Shorthand() + " / " + resources[(int)ResourceType.Candles].Shorthand();
-        soulsCost.text = "Souls:\n" + sCost.Shorthand() + " / " + resources[(int)ResourceType.Souls].Shorthand();
-        fleshCost.text = "Flesh:\n" + fCost.Shorthand() + " / " + resources[(int)ResourceType.Flesh].Shorthand();
+        bloodCost.text = "<sprite name=\"Blood\">" + bCost.Shorthand() + " / " + resources[(int)ResourceType.Blood].Shorthand();
+        candlesCost.text = "<sprite name=\"Candles\">" + cCost.Shorthand() + " / " + resources[(int)ResourceType.Candles].Shorthand();
+        soulsCost.text = "<sprite name=\"Souls\">" + sCost.Shorthand() + " / " + resources[(int)ResourceType.Souls].Shorthand();
+        fleshCost.text = "<sprite name=\"Flesh\">" + fCost.Shorthand() + " / " + resources[(int)ResourceType.Flesh].Shorthand();
 
         //Blood
         if (bCost <= 0)
@@ -429,12 +430,20 @@ public class GameManager : MonoBehaviour
 
 public static class Utility
 {
+    public static string Shorthand(this long number)
+    {
+        return Shorthand((double)number);
+    }
     public static string Shorthand(this int number)
     {
-        return Shorthand((float)number);
+        return Shorthand((double)number);
+    }
+    public static string Shorthand(this float number)
+    {
+        return Shorthand((double)number);
     }
 
-    public static string Shorthand(this float number)
+    public static string Shorthand(this double number)
     {
         //0-999
         if (number < 1000)
@@ -452,11 +461,11 @@ public static class Utility
         return (number / 1000000000000f).DecimalPlaces(0) + "T";
     }
 
-    public static float DecimalPlaces(this float value, int numPlaces)
+    public static double DecimalPlaces(this double value, int numPlaces)
     {
         numPlaces = Mathf.Clamp(numPlaces, 0, 10);
         float multiplier = Mathf.Pow(10, numPlaces);
-        return Mathf.Round(value * multiplier) / multiplier;
+        return Math.Round(value * multiplier) / multiplier;
     }
 }
 
