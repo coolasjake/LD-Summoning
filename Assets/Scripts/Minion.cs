@@ -17,6 +17,7 @@ public class Minion : MonoBehaviour
         isTemp = temp;
         SR.sprite = data.minionSprite;
         SR.color = data.testColor;
+
         if (minData.summonSound.Length > 0)
         {
             audioSource1.clip = minData.summonSound[Random.Range(0, minData.summonSound.Length)];
