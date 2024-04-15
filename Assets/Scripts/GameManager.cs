@@ -79,9 +79,6 @@ public class GameManager : MonoBehaviour
     public UnityEvent MusicIntensity3 = new UnityEvent();
     public UnityEvent MusicIntensity4 = new UnityEvent();
 
-    public AudioMixerSnapshot snapshotMain;
-    public AudioMixerSnapshot snapshotEnd;
-
     private MinionData[] minionsOptions;
     private List<MinionWorkData> workData = new List<MinionWorkData>();
     private List<Minion> minions = new List<Minion>();
@@ -104,7 +101,6 @@ public class GameManager : MonoBehaviour
             generator.display.color = resourceCols[(int)generator.type];
         }
 
-        snapshotMain.TransitionTo(0.01f);
         StartMusic.Invoke();
         MusicIntensity1.Invoke();
     }
@@ -392,7 +388,6 @@ public class GameManager : MonoBehaviour
 
     public void DEBUG_SummonWorldEater()
     {
-        snapshotEnd.TransitionTo(0.01f);
         EndMusic.Invoke();
     }
 
