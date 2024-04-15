@@ -17,6 +17,8 @@ public class ResourceGenerator: MonoBehaviour
     public UnityEvent ManualCollect = new UnityEvent();
     public UnityEvent ManualCollectBig = new UnityEvent();
 
+    private readonly Vector3 orbitAxis = new Vector3(0, 0.99f, 0.01f);
+
     private void OnMouseDown()
     {
         GameManager.ManuallyGenerate(type);
@@ -50,7 +52,8 @@ public class ResourceGenerator: MonoBehaviour
         if (minions.Count > 0)
             angle = (_minionsGivenAPos / (float)minions.Count) * 360f;
         angle = (angle + Time.time * orbitSpeed) % 360f;
-        Vector3 orbitPos = (Quaternion.Euler(0f, 0f, angle) * Vector3.up) * workRadius;
+        Vector3 orbitPos = (Quaternion.Euler(0f, 0f, angle) * Vector2.up) * workRadius;
+        orbitPos += Vector3.forward * ((angle > 90f && angle < 270f) ? -0.5f : 0.5f);
         Vector3 target = transform.position + orbitPos;
 
         _minionsGivenAPos += 1;

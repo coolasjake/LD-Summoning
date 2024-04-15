@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < 4; ++i)
             {
-                resources[i] -= _currentSummon.data.Cost(i);
+                resources[i] -= GetCost((ResourceType)i);
             }
 
             _currentSummon.data.discovered = true;
