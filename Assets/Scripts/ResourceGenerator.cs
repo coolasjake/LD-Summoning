@@ -15,6 +15,7 @@ public class ResourceGenerator: MonoBehaviour
     private int _minionsGivenAPos = 0;
 
     public UnityEvent ManualCollect = new UnityEvent();
+    public UnityEvent ManualCollectBig = new UnityEvent();
 
     private void OnMouseDown()
     {

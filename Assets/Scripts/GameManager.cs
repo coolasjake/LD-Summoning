@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
             generator.display.color = resourceCols[(int)generator.type];
         }
 
-        snapshotMain.TransitionTo(0.1f);
+        snapshotMain.TransitionTo(0.01f);
         StartMusic.Invoke();
         MusicIntensity1.Invoke();
     }
@@ -359,7 +359,7 @@ public class GameManager : MonoBehaviour
 
     public void DEBUG_SummonWorldEater()
     {
-        snapshotEnd.TransitionTo(0.1f);
+        snapshotEnd.TransitionTo(0.01f);
         EndMusic.Invoke();
     }
 
