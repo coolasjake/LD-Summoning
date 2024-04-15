@@ -62,17 +62,15 @@ public class GameManager : MonoBehaviour
 
     [Header("Costs")]
     public TMP_Text minionName;
+    public TMP_Text loopsCost;
+    public TMP_Text minionWorkType;
 
     public Color cantAffordCol = Color.black;
     public Color[] resourceCols = { Color.red, Color.yellow, Color.cyan, Color.gray };
     public TMP_Text bloodCost;
-    //public Color bloodCol = Color.red;
     public TMP_Text candlesCost;
-    //public Color candlesCol = Color.yellow;
     public TMP_Text soulsCost;
-    //public Color soulsCol = Color.cyan;
     public TMP_Text fleshCost;
-    //public Color fleshCol = Color.grey;
 
     public UnityEvent StartMusic = new UnityEvent();
     public UnityEvent EndMusic = new UnityEvent();
@@ -280,7 +278,8 @@ public class GameManager : MonoBehaviour
             if (type >= 4)
                 continue;
             generator.display.color = resourceCols[type];
-            generator.display.text = "<sprite name=\"" + generator.type.ToString() + "\">" + resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
+            generator.display.text = resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
+            //generator.display.text = "<sprite name=\"" + generator.type.ToString() + "\">" + resources[type].Shorthand() + "\n" + workSpeed[type].Shorthand() + "/s";
         }
     }
 
@@ -293,10 +292,19 @@ public class GameManager : MonoBehaviour
         int sCost = GetCost(ResourceType.Souls);
         int fCost = GetCost(ResourceType.Flesh);
 
+        bloodCost.text = resources[(int)ResourceType.Blood].Shorthand() + " / " + bCost.Shorthand();
+        candlesCost.text = resources[(int)ResourceType.Candles].Shorthand()  + " / " + cCost.Shorthand();
+        soulsCost.text = resources[(int)ResourceType.Souls].Shorthand() + " / " + sCost.Shorthand();
+        fleshCost.text = resources[(int)ResourceType.Flesh].Shorthand() + " / " + fCost.Shorthand();
+        /*
         bloodCost.text = "<sprite name=\"Blood\">" + bCost.Shorthand() + " / " + resources[(int)ResourceType.Blood].Shorthand();
         candlesCost.text = "<sprite name=\"Candles\">" + cCost.Shorthand() + " / " + resources[(int)ResourceType.Candles].Shorthand();
         soulsCost.text = "<sprite name=\"Souls\">" + sCost.Shorthand() + " / " + resources[(int)ResourceType.Souls].Shorthand();
         fleshCost.text = "<sprite name=\"Flesh\">" + fCost.Shorthand() + " / " + resources[(int)ResourceType.Flesh].Shorthand();
+        */
+
+        minionWorkType.text = "<sprite name=\"" + _currentSummon.WorkType + "\">";
+        loopsCost.text = _currentSummon.data.numLoops + "<sprite name=\"Circle\">";
 
         //Blood
         if (bCost <= 0)
