@@ -8,14 +8,17 @@ public class MinionData : ScriptableObject
 {
     [Header("Summon Stats")]
     public string runeCombo = "0000";
+    public int tier = 0;
     public int bloodCost;
     public int candlesCost;
     public int soulsCost;
     public int fleshCost;
     public int drawTime;
+    public int numLoops = 1;
 
     [Header("Minion Stats")]
     public bool discovered = false;
+    public int maxCount = 3;
     public ResourceType workType = ResourceType.Blood;
     public int resourcesPerWorkTick = 1;
     public float moveSpeed = 2f;

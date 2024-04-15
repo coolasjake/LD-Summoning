@@ -9,6 +9,7 @@ public class Circle : MonoBehaviour
     public SpriteRenderer innerCircle;
 
     public float flashDuration = 0.5f;
+    public float maxAnglePerSecond = 720f;
 
     public List<Rune> runes = new List<Rune>();
 
@@ -23,19 +24,47 @@ public class Circle : MonoBehaviour
     [Range(0f, 1f)]
     public float fill = 1f;
 
+    [SerializeField]
     private float _startAngle = 0f;
+    [SerializeField]
+    private float _lastAngle = 0;
+    [SerializeField]
     private bool _startedDrawing = false;
+    [SerializeField]
     private bool _doingAnimation = false;
-    private bool _drawing = false;
+    [SerializeField]
+    private bool _playerDrawing = false;
+    [SerializeField]
+    private bool _minionsDrawing = false;
     private float _opacity = 1f;
+    private bool _initialized = false;
 
+    [SerializeField]
+    private Vector2 _startDir = Vector2.zero;
+    [SerializeField]
     private Vector2 _lastDir = Vector2.zero;
 
     public static Vector3 MousePos => Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-    // Start is called before the first frame update
-    void Start()
+    private int _drawCost = 1;
+    private int _numLoops = 1;
+    [SerializeField]
+    private float _currentDrawValue = 0;
+
+    public void SetupSummon(int drawCost, int numLoops)
     {
+        Initialize();
+        _drawCost = drawCost;
+        _numLoops = numLoops;
+        UpdateDrawValueAndAngle();
+    }
+
+    // Start is called before the first frame update
+    public void Initialize()
+    {
+        if (_initialized)
+            return;
+
         _outMat = new Material(outerCircle.sharedMaterial);
         outerCircle.material = _outMat;
 
@@ -46,18 +75,20 @@ public class Circle : MonoBehaviour
         {
             rune.runePressed += UpdateRunes;
         }
+
+        _initialized = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_startedDrawing && _drawing == false && _doingAnimation == false)
+        if (_startedDrawing && _playerDrawing == false && _minionsDrawing == false && _doingAnimation == false)
         {
             _opacity = Mathf.Max(_opacity - Time.deltaTime, 0);
             if (_opacity == 0)
             {
-                fill = 0;
-                ApplyFill();
+                _currentDrawValue = 0;
+                UpdateDrawValueAndAngle();
                 _opacity = 1f;
                 _startedDrawing = false;
             }
@@ -66,10 +97,24 @@ public class Circle : MonoBehaviour
         }
     }
 
-    private void ApplyFill()
+    private void UpdateDrawValueAndAngle()
     {
+        if (_drawCost <= 0)
+            _drawCost = 1;
+        if (_numLoops <= 0)
+            _numLoops = 1;
+
+        fill = _currentDrawValue / ((float)_drawCost / _numLoops);
+        _lastAngle = _startAngle + (fill * 360f) % 360f;
+
         _outMat.SetFloat("_Fill", fill);
         _inMat.SetFloat("_Fill", fill);
+
+        if (_currentDrawValue >= _drawCost)
+        {
+            fill = _numLoops;
+            FinishCircle();
+        }
     }
 
     private void UpdateRunes()
@@ -85,63 +130,110 @@ public class Circle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        StartDrawingCircle();
+        StartDrawingPlayer();
     }
 
     private void OnMouseExit()
     {
-        if (_drawing && !_doingAnimation)
-            StopDrawing();
+        if (_playerDrawing && !_doingAnimation)
+            PlayerStopDrawing();
     }
 
     private void OnMouseDrag()
     {
-        DrawCircle();
+        PlayerDrawCircle();
     }
 
-    private void StartDrawingCircle()
+    private void StartDrawingPlayer()
+    {
+        if (_doingAnimation)
+            return;
+
+        foreach (Rune rune in runes)
+            rune.ColliderOn = false;
+
+        if (_startedDrawing == false)
+        {
+            _startDir = MousePos - transform.position;
+            _lastDir = _startDir;
+            _startAngle = Vector2.SignedAngle(_startDir, Vector2.up);
+            _outMat.SetFloat("_StartAngle", _startAngle);
+
+            StartDrawing.Invoke();
+            ResetOpacity();
+
+            _startedDrawing = true;
+        }
+
+        _playerDrawing = true;
+        _lastDir = MousePos - transform.position;
+    }
+
+    private void StartDrawingMinions()
     {
         if (_doingAnimation)
             return;
 
         if (_startedDrawing == false)
         {
-            _lastDir = MousePos - transform.position;
-            _startAngle = Vector2.SignedAngle(_lastDir, Vector2.up);
+            _startDir = Vector2.up;
+            _lastDir = _startDir;
+            _startAngle = Vector2.SignedAngle(_startDir, Vector2.up);
             _outMat.SetFloat("_StartAngle", _startAngle);
+
+            StartDrawing.Invoke();
+            ResetOpacity();
+
             _startedDrawing = true;
-
-            foreach (Rune rune in runes)
-                rune.ColliderOn = false;
         }
-
-        StartDrawing.Invoke();
-        _drawing = true;
-        ResetOpacity();
     }
 
-    private void DrawCircle()
+    /// <summary> Call in fixed update with work value multiplied by fixed delta time. </summary>
+    public void AutoDrawCircle(float workValue, bool costsMet)
     {
-        if (_drawing == false || _doingAnimation)
+        _minionsDrawing = false;
+
+        if (costsMet == false || _doingAnimation)
+            return;
+
+        if (_playerDrawing == false)
+            CancelDrawing.Invoke();//TODO: FIX (only cancel if player and minions both stop drawing)
+
+        if (workValue > 0)
+        {
+            if (_startedDrawing == false)
+                StartDrawingMinions();
+
+            _minionsDrawing = true;
+            AddToDrawing(workValue);
+        }
+    }
+
+    private void PlayerDrawCircle()
+    {
+        if (_playerDrawing == false || _doingAnimation)
             return;
 
         Vector2 direction = MousePos - transform.position;
-        float deltaAngle = Vector2.SignedAngle(direction,_lastDir);
-        if (deltaAngle > 0)
-            fill += deltaAngle / 360f;//Mathf.Max(fill, (angle - _startAngle) / 360f);
-        _lastDir = direction;
-        if (fill >= 1)
+        float delta = Vector2.SignedAngle(direction,_lastDir);
+        if (delta > 0 && delta < maxAnglePerSecond * Time.deltaTime)
         {
-            fill = 1f;
-            FinishCircle();
+            _lastDir = direction;
+            AddToDrawing((delta / 360f) * (_drawCost / _numLoops));
         }
-        ApplyFill();
     }
 
-    private void StopDrawing()
+    private void AddToDrawing(float value)
     {
-        CancelDrawing.Invoke();
-        _drawing = false;
+        _currentDrawValue += value;
+        UpdateDrawValueAndAngle();
+    }
+
+    private void PlayerStopDrawing()
+    {
+        if (_minionsDrawing == false)
+            CancelDrawing.Invoke();
+        _playerDrawing = false;
         foreach (Rune rune in runes)
             rune.ColliderOn = true;
     }
@@ -184,11 +276,11 @@ public class Circle : MonoBehaviour
         }
         ResetOpacity();
 
-        fill = 0;
-        ApplyFill();
+        _currentDrawValue = 0;
+        UpdateDrawValueAndAngle();
 
         _doingAnimation = false;
-        StopDrawing();
+        PlayerStopDrawing();
 
         GameManager.Summon();
 
@@ -213,11 +305,11 @@ public class Circle : MonoBehaviour
         }
         ResetOpacity();
 
-        fill = 0;
-        ApplyFill();
+        _currentDrawValue = 0;
+        UpdateDrawValueAndAngle();
 
         _doingAnimation = false;
-        StopDrawing();
+        PlayerStopDrawing();
 
         _finishCircleCo = null;
     }
@@ -237,7 +329,7 @@ public class Circle : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)_lastDir);
-
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)_startDir);
+        Gizmos.DrawWireSphere(transform.position, _lastAngle);
     }
 }

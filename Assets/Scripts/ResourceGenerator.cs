@@ -37,6 +37,12 @@ public class ResourceGenerator: MonoBehaviour
 
     }
 
+    public void AddMinion(Minion minion)
+    {
+        int randIndex = Random.Range(0, minions.Count);
+        minions.Insert(randIndex, minion);
+    }
+
     public Vector3 MinionWorkPos()
     {
         float angle = 0;

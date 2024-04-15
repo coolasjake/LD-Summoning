@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: SWARM
   m_EditorClassIdentifier: 
   runeCombo: 1110
+  tier: 0
   bloodCost: 10000
   candlesCost: 0
   soulsCost: 0
   fleshCost: 0
   drawTime: 1000
-  discovered: 1
-  workType: 5
+  numLoops: 1
+  discovered: 0
+  maxCount: 3
+  workType: 6
   resourcesPerWorkTick: 66
   moveSpeed: 35
   minionSprite: {fileID: -315012516, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}

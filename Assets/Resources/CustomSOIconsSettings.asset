@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSettings:
     defaultIcon: {fileID: 0}
-    iconsScale: 1
-    backgroundImage: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-    backgroundImageScale: 1
+    iconsScale: 0.5
+    backgroundImage: {fileID: 0}
+    backgroundImageScale: 0.5
   overrides: []

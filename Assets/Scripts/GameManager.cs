@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
             return;
 
         resources[(int)type] += manualWork[(int)type];
-        Debug.Log(resources[(int)type] + ", added " + manualWork[(int)type]);
         singleton.UpdateResourceCounts();
         singleton.CheckCanSummon();
     }
@@ -142,6 +141,7 @@ public class GameManager : MonoBehaviour
                 _currentSummon = summon;
         }
 
+        circle.SetupSummon(_currentSummon.drawTime, _currentSummon.numLoops);
         CheckCanSummon();
     }
 
@@ -191,9 +191,10 @@ public class GameManager : MonoBehaviour
         if (Time.time > _lastWork + workInterval)
         {
             WorkTick();
-            CheckCanSummon();
             _lastWork += workInterval;
         }
+        CheckCanSummon();
+        CircleWorkTick();
     }
 
     private void WorkTick()
@@ -211,7 +212,7 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < 4; ++i)
                     work[i] += minion.WorkSpeed;
             }
-            else
+            else if (minion.WorkType == ResourceType.Multiplier)
                 multiplier += minion.WorkSpeed;
         }
 
@@ -250,6 +251,18 @@ public class GameManager : MonoBehaviour
         }
 
         UpdateResourceCounts();
+    }
+
+    private void CircleWorkTick()
+    {
+        //Calculate values
+        int totalDrawSpeed = 0;
+        foreach (MinionWorkData minion in workData)
+        {
+            if (minion.WorkType == ResourceType.Circle)
+                totalDrawSpeed += minion.WorkSpeed;
+        }
+        circle.AutoDrawCircle(totalDrawSpeed * Time.fixedDeltaTime, _canSummon);
     }
 
     private void UpdateResourceCounts()

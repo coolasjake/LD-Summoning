@@ -17,7 +17,7 @@ public class Minion : MonoBehaviour
         SR.color = data.testColor;
         generator = gen;
         if (isTemp == false)
-            generator.minions.Add(this);
+            generator.AddMinion(this);
     }
 
     private void Update()
