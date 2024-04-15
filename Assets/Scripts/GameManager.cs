@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
     private List<Minion> minions = new List<Minion>();
 
     private float _lastWork = 0;
-    private MinionData _currentSummon = null;
+    private MinionWorkData _currentSummon = null;
     private bool _canSummon = false;
 
     void Awake()
@@ -123,25 +123,31 @@ public class GameManager : MonoBehaviour
         else
         {
             foreach (MinionData summon in minionsOptions)
+            {
                 summon.discovered = false;
+                workData.Add(new MinionWorkData(summon));
+            }
 
-            _currentSummon = minionsOptions[0];
+            _currentSummon = workData[0];
+            SetSummon("1111");
+            _currentSummon.data.discovered = true;
             SetSummon("0000");
+            _currentSummon.data.discovered = true;
             CheckCanSummon();
         }    
     }
 
     private void SetSummon(string runeCombo)
     {
-        _currentSummon = minionsOptions[0];
+        _currentSummon = workData[0];
 
-        foreach (MinionData summon in minionsOptions)
+        foreach (MinionWorkData summon in workData)
         {
-            if (summon.runeCombo == runeCombo)
+            if (summon.data.runeCombo == runeCombo)
                 _currentSummon = summon;
         }
 
-        circle.SetupSummon(_currentSummon.drawTime, _currentSummon.numLoops);
+        circle.SetupSummon(_currentSummon.data.drawTime, _currentSummon.data.numLoops);
         CheckCanSummon();
     }
 
@@ -149,36 +155,29 @@ public class GameManager : MonoBehaviour
     {
         if (_canSummon)
         {
-            Debug.Log("Summoning " + _currentSummon.name);
+            Debug.Log("Summoning " + _currentSummon.data.name);
 
             for (int i = 0; i < 4; ++i)
             {
-                resources[i] -= _currentSummon.Cost(i);
+                resources[i] -= _currentSummon.data.Cost(i);
             }
 
-            _currentSummon.discovered = true;
+            _currentSummon.data.discovered = true;
 
-            int workIndex = workData.FindIndex(X => X.data == _currentSummon);
-            if (workIndex == -1)
-            {
-                workData.Add(new MinionWorkData(_currentSummon));
-                workIndex = workData.Count - 1;
-            }
-
-            bool isTempMinion = workData[workIndex].Summon();
+            bool isTempMinion = _currentSummon.Summon();
             
-            if (_currentSummon.workType == ResourceType.All)
+            if (_currentSummon.data.workType == ResourceType.All)
             {
                 for (int i = 0; i < 4; ++i)
                 {
                     Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
-                    newMinion.Setup(_currentSummon, generators[i], isTempMinion);
+                    newMinion.Setup(_currentSummon.data, generators[i], isTempMinion);
                 }
             }
             else
             {
                 Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
-                newMinion.Setup(_currentSummon, generators[(int)_currentSummon.workType], isTempMinion);
+                newMinion.Setup(_currentSummon.data, generators[(int)_currentSummon.data.workType], isTempMinion);
             }
         }
 
@@ -281,17 +280,22 @@ public class GameManager : MonoBehaviour
     {
         _canSummon = true;
 
-        bloodCost.text = "Blood:\n" + _currentSummon.bloodCost.Shorthand() + " / " + resources[(int)ResourceType.Blood].Shorthand();
-        candlesCost.text = "Candles:\n" + _currentSummon.candlesCost.Shorthand() + " / " + resources[(int)ResourceType.Candles].Shorthand();
-        soulsCost.text = "Souls:\n" + _currentSummon.soulsCost.Shorthand() + " / " + resources[(int)ResourceType.Souls].Shorthand();
-        fleshCost.text = "Flesh:\n" + _currentSummon.fleshCost.Shorthand() + " / " + resources[(int)ResourceType.Flesh].Shorthand();
+        int bCost = GetCost(ResourceType.Blood);
+        int cCost = GetCost(ResourceType.Candles);
+        int sCost = GetCost(ResourceType.Souls);
+        int fCost = GetCost(ResourceType.Flesh);
+
+        bloodCost.text = "Blood:\n" + bCost.Shorthand() + " / " + resources[(int)ResourceType.Blood].Shorthand();
+        candlesCost.text = "Candles:\n" + cCost.Shorthand() + " / " + resources[(int)ResourceType.Candles].Shorthand();
+        soulsCost.text = "Souls:\n" + sCost.Shorthand() + " / " + resources[(int)ResourceType.Souls].Shorthand();
+        fleshCost.text = "Flesh:\n" + fCost.Shorthand() + " / " + resources[(int)ResourceType.Flesh].Shorthand();
 
         //Blood
-        if (_currentSummon.bloodCost <= 0)
+        if (bCost <= 0)
         {
             bloodCost.text = "";
         }
-        else if (_currentSummon.bloodCost > resources[(int)ResourceType.Blood])
+        else if (bCost > resources[(int)ResourceType.Blood])
         {
             _canSummon = false;
             bloodCost.color = cantAffordCol;
@@ -300,11 +304,11 @@ public class GameManager : MonoBehaviour
             bloodCost.color = resourceCols[(int)ResourceType.Blood];
 
         //Candles
-        if (_currentSummon.candlesCost <= 0)
+        if (cCost <= 0)
         {
             candlesCost.text = "";
         }
-        else if (_currentSummon.candlesCost > resources[(int)ResourceType.Candles])
+        else if (cCost > resources[(int)ResourceType.Candles])
         {
             _canSummon = false;
             candlesCost.color = cantAffordCol;
@@ -313,11 +317,11 @@ public class GameManager : MonoBehaviour
             candlesCost.color = resourceCols[(int)ResourceType.Candles];
 
         //Souls
-        if (_currentSummon.soulsCost <= 0)
+        if (sCost <= 0)
         {
             soulsCost.text = "";
         }
-        else if (_currentSummon.soulsCost > resources[(int)ResourceType.Souls])
+        else if (sCost > resources[(int)ResourceType.Souls])
         {
             _canSummon = false;
             soulsCost.color = cantAffordCol;
@@ -326,11 +330,11 @@ public class GameManager : MonoBehaviour
             soulsCost.color = resourceCols[(int)ResourceType.Souls];
 
         //Flesh
-        if (_currentSummon.fleshCost <= 0)
+        if (fCost <= 0)
         {
             fleshCost.text = "";
         }
-        else if (_currentSummon.fleshCost > resources[(int)ResourceType.Flesh])
+        else if (fCost > resources[(int)ResourceType.Flesh])
         {
             _canSummon = false;
             fleshCost.color = cantAffordCol;
@@ -343,8 +347,8 @@ public class GameManager : MonoBehaviour
         else
             minionName.color = Color.red;
 
-        if (_currentSummon.discovered)
-            minionName.text = _currentSummon.name;
+        if (_currentSummon.data.discovered)
+            minionName.text = _currentSummon.data.name;
         else
             minionName.text = "???";
     }
@@ -376,10 +380,25 @@ public class GameManager : MonoBehaviour
         EndMusic.Invoke();
     }
 
+    private int GetCost(ResourceType resourceType)
+    {
+        if (_currentSummon == null)
+            return 1;
+
+        if (resourceType == ResourceType.Circle)
+            return Mathf.CeilToInt(_currentSummon.data.drawTime * _currentSummon.costMult);
+
+        int type = (int)resourceType;
+        if (type < 4)
+            return Mathf.CeilToInt(_currentSummon.data.Cost(type) * _currentSummon.costMult);
+
+        return 0;
+    }
+
     private class MinionWorkData
     {
         public MinionData data;
-        public ResourceType workType = ResourceType.Blood;
+        public float costMult = 1f;
         public int count = 0;
         public int level = 1;
 
@@ -393,6 +412,7 @@ public class GameManager : MonoBehaviour
 
         public bool Summon()
         {
+            costMult += costMult * 0.1f;
             if (count < 3)
             {
                 count += 1;

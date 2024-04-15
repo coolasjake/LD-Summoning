@@ -6,8 +6,9 @@ public class Minion : MonoBehaviour
 {
     private bool isTemp = true;
     public SpriteRenderer SR;
-    public MinionData data;
-    public ResourceGenerator generator;
+    public AudioSource audioSource;
+    private MinionData data;
+    private ResourceGenerator generator;
 
     public void Setup(MinionData minData, ResourceGenerator gen, bool temp)
     {
@@ -15,6 +16,12 @@ public class Minion : MonoBehaviour
         isTemp = temp;
         SR.sprite = data.minionSprite;
         SR.color = data.testColor;
+        if (minData.summonSounds.Length > 0)
+        {
+            audioSource.clip = minData.summonSounds[Random.Range(0, minData.summonSounds.Length)];
+            audioSource.loop = false;
+            audioSource.Play();
+        }
         generator = gen;
         if (isTemp == false)
             generator.AddMinion(this);

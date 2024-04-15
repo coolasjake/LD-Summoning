@@ -24,31 +24,22 @@ public class Circle : MonoBehaviour
     [Range(0f, 1f)]
     public float fill = 1f;
 
-    [SerializeField]
     private float _startAngle = 0f;
-    [SerializeField]
     private float _lastAngle = 0;
-    [SerializeField]
     private bool _startedDrawing = false;
-    [SerializeField]
     private bool _doingAnimation = false;
-    [SerializeField]
     private bool _playerDrawing = false;
-    [SerializeField]
     private bool _minionsDrawing = false;
     private float _opacity = 1f;
     private bool _initialized = false;
 
-    [SerializeField]
     private Vector2 _startDir = Vector2.zero;
-    [SerializeField]
     private Vector2 _lastDir = Vector2.zero;
 
     public static Vector3 MousePos => Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
     private int _drawCost = 1;
     private int _numLoops = 1;
-    [SerializeField]
     private float _currentDrawValue = 0;
 
     public void SetupSummon(int drawCost, int numLoops)
@@ -194,10 +185,11 @@ public class Circle : MonoBehaviour
         _minionsDrawing = false;
 
         if (costsMet == false || _doingAnimation)
+        {
+            if (_startedDrawing && _playerDrawing)
+                CancelDrawing.Invoke();
             return;
-
-        if (_playerDrawing == false)
-            CancelDrawing.Invoke();//TODO: FIX (only cancel if player and minions both stop drawing)
+        }
 
         if (workValue > 0)
         {
