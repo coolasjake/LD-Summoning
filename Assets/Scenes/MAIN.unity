@@ -10088,7 +10088,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: UnMute
+        m_MethodName: UnMuteFadeIn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10151,7 +10151,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: UnMute
+        m_MethodName: UnMuteFadeIn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10190,7 +10190,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: Mute
+        m_MethodName: UnMute
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10214,7 +10214,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: Mute
+        m_MethodName: UnMuteFadeIn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10226,7 +10226,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: UnMute
+        m_MethodName: Mute
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10277,7 +10277,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2078996570}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: UnMute
+        m_MethodName: UnMuteFadeIn
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
