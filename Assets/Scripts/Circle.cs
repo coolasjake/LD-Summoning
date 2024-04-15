@@ -9,7 +9,7 @@ public class Circle : MonoBehaviour
     public SpriteRenderer innerCircle;
 
     public float flashDuration = 0.5f;
-    public float maxAnglePerSecond = 720f;
+    public float maxAnglePerUpdate = 90f;
 
     public List<Rune> runes = new List<Rune>();
 
@@ -73,6 +73,11 @@ public class Circle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_playerDrawing && !_doingAnimation && Input.GetMouseButtonUp(0))
+            PlayerStopDrawing();
+        if (_startedDrawing && Input.GetMouseButton(0))
+            PlayerDrawCircle();
+
         if (_startedDrawing && _playerDrawing == false && _minionsDrawing == false && _doingAnimation == false)
         {
             _opacity = Mathf.Max(_opacity - Time.deltaTime, 0);
@@ -104,6 +109,8 @@ public class Circle : MonoBehaviour
         if (_currentDrawValue >= _drawCost)
         {
             fill = _numLoops;
+            _outMat.SetFloat("_Fill", fill);
+            _inMat.SetFloat("_Fill", fill);
             FinishCircle();
         }
     }
@@ -122,17 +129,6 @@ public class Circle : MonoBehaviour
     private void OnMouseDown()
     {
         StartDrawingPlayer();
-    }
-
-    private void OnMouseExit()
-    {
-        if (_playerDrawing && !_doingAnimation)
-            PlayerStopDrawing();
-    }
-
-    private void OnMouseDrag()
-    {
-        PlayerDrawCircle();
     }
 
     private void StartDrawingPlayer()
@@ -208,7 +204,7 @@ public class Circle : MonoBehaviour
 
         Vector2 direction = MousePos - transform.position;
         float delta = Vector2.SignedAngle(direction,_lastDir);
-        if (delta > 0 && delta < maxAnglePerSecond * Time.deltaTime)
+        if (delta > 0 && delta < maxAnglePerUpdate)
         {
             _lastDir = direction;
             AddToDrawing((delta / 360f) * (_drawCost / _numLoops));
