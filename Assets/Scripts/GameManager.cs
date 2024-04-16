@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text minionName;
     public TMP_Text loopsCost;
     public TMP_Text minionWorkType;
+    public Transform banner;
+    public float bannerSpeed = 5f;
 
     public Color cantAffordCol = Color.black;
     public Color[] resourceCols = { Color.red, Color.yellow, Color.cyan, Color.gray };
@@ -101,6 +103,8 @@ public class GameManager : MonoBehaviour
                 continue;
             generator.display.color = resourceCols[(int)generator.type];
         }
+
+        banner.gameObject.SetActive(false);
 
         StartMusic.Invoke();
         MusicIntensity1.Invoke();
@@ -178,6 +182,7 @@ public class GameManager : MonoBehaviour
                 {
                     gen.doOrbit = false;
                 }
+                StartCoroutine(LowerInBanner());
             }
             else if (_currentSummon.data.workType == ResourceType.All)
             {
@@ -201,6 +206,18 @@ public class GameManager : MonoBehaviour
         }
 
         CheckCanSummon();
+    }
+
+    private IEnumerator LowerInBanner()
+    {
+        banner.gameObject.SetActive(true);
+        Vector3 targetPos = banner.position;
+        banner.position += Vector3.up * 10f;
+        while (banner.position != targetPos)
+        {
+            banner.position = Vector3.MoveTowards(banner.position, targetPos, bannerSpeed * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     // Update is called once per frame
