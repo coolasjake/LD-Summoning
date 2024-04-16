@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runeCombo: 1111
   tier: 7
-  bloodCost: 1000000000
-  candlesCost: 1000000000
-  soulsCost: 1000000000
-  fleshCost: 1000000000
+  bloodCost: 1000000
+  candlesCost: 1000000
+  soulsCost: 1000000
+  fleshCost: 1000000
   drawTime: 1000000
   numLoops: 7
   discovered: 1
