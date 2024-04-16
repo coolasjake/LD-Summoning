@@ -20,7 +20,7 @@ MonoBehaviour:
   fleshCost: 1000
   drawTime: 2000
   numLoops: 5
-  discovered: 0
+  discovered: 1
   maxCount: 3
   workType: 0
   resourcesPerWorkTick: 1000
@@ -32,4 +32,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8e709f3de1d7e11499d2301d60c6431e, type: 3}
   - {fileID: 8300000, guid: bfa47ec4306139a43acdad1e46f8f2b5, type: 3}
   - {fileID: 8300000, guid: f81c991d7b741f94294a541cbe8adc45, type: 3}
-  summonSoundExtra: []
+  summonSoundExtra:
+  - {fileID: 8300000, guid: 6c1b2ceee8f396c408aece0b8ec7fb32, type: 3}
