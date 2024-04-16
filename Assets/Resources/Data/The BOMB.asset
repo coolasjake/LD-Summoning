@@ -34,4 +34,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d8c48cc348e1aea49873df016e79dbf7, type: 3}
   - {fileID: 8300000, guid: fb52f9f8e287b204d8fc7aa2e33521f9, type: 3}
   summonSoundExtra:
-  - {fileID: 8300000, guid: 67edaa9e716eadf4da2df49f0b89d383, type: 3}
+  - {fileID: 8300000, guid: db99bf7d97478034689ea7e7b50d009a, type: 3}
