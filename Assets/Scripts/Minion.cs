@@ -35,7 +35,7 @@ public class Minion : MonoBehaviour
             audioSource2.Play();
         }
         generator = gen;
-        if (isTemp == false)
+        if (isTemp == false && generator != null)
             generator.AddMinion(this);
     }
 
