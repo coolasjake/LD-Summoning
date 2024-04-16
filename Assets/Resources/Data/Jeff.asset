@@ -28,4 +28,13 @@ MonoBehaviour:
   minionSprite: {fileID: 23069836, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 1, b: 1, a: 1}
-  summonSounds: []
+  summonSound:
+  - {fileID: 8300000, guid: fdc0b915e1960e848a76a466e9f25e66, type: 3}
+  - {fileID: 8300000, guid: eeb1119291e1b48469caa692d73a684e, type: 3}
+  - {fileID: 8300000, guid: f86fd95313edc8a49b5736b396659621, type: 3}
+  - {fileID: 8300000, guid: 4392391d21f86cd4f90733db4652e131, type: 3}
+  summonSoundExtra:
+  - {fileID: 8300000, guid: ab8ddc10434c5704888d0a1b34d7d7c0, type: 3}
+  - {fileID: 8300000, guid: 27820c48c6fa5a94788989cfbbd81894, type: 3}
+  - {fileID: 8300000, guid: bb12947b63a66f74b80f336e2961723b, type: 3}
+  - {fileID: 8300000, guid: ca3308a19b3b2584d8dabbd3068f3da7, type: 3}

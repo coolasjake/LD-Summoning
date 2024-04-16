@@ -28,4 +28,6 @@ MonoBehaviour:
   minionSprite: {fileID: 365562303, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 1, b: 1, a: 1}
-  summonSounds: []
+  summonSound:
+  - {fileID: 8300000, guid: 1fd3946542c1bc64a9433146f955faba, type: 3}
+  summonSoundExtra: []

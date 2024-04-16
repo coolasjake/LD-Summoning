@@ -20,7 +20,7 @@ MonoBehaviour:
   fleshCost: 4
   drawTime: 20
   numLoops: 1
-  discovered: 1
+  discovered: 0
   maxCount: 3
   workType: 1
   resourcesPerWorkTick: 2
@@ -28,4 +28,7 @@ MonoBehaviour:
   minionSprite: {fileID: -1760551773, guid: fcf8a803794da5043931f7db4a9c6c23, type: 3}
   description: 
   testColor: {r: 1, g: 0.9662839, b: 0.8632076, a: 1}
-  summonSounds: []
+  summonSound:
+  - {fileID: 8300000, guid: b3dec083a151b114a8ad969792dedbd8, type: 3}
+  summonSoundExtra:
+  - {fileID: 8300000, guid: 8e8a57f58eaf1fb4484f6e67c128c6ae, type: 3}

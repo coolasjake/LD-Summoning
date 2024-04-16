@@ -29,8 +29,7 @@ MonoBehaviour:
   description: 
   testColor: {r: 1, g: 1, b: 1, a: 1}
   summonSound:
-  - {fileID: 8300000, guid: 89e6046642468fa4fba21f54d209d70c, type: 3}
-  - {fileID: 8300000, guid: 2dab1607c66b92649a22dfdff1152e59, type: 3}
-  - {fileID: 8300000, guid: a3b4f943fd45df241b94442dced835cd, type: 3}
-  - {fileID: 8300000, guid: 54c65a59ec9f71e41a35232427c397b9, type: 3}
+  - {fileID: 8300000, guid: 16de2e4d7e6d1c24d9edf61375b9764a, type: 3}
+  - {fileID: 8300000, guid: ab9be1a513c858c478516eb8f9f5ae5c, type: 3}
+  - {fileID: 8300000, guid: afadd614806bd2945b290a1686cfb725, type: 3}
   summonSoundExtra: []
