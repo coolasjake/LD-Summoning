@@ -12,6 +12,9 @@ public class ResourceGenerator: MonoBehaviour
     public float orbitSpeed = 0.01f;
     [HideInInspector]
     public List<Minion> minions = new List<Minion>();
+    [HideInInspector]
+    public bool doOrbit = true;
+    private float _orbitAngle = 0f;
     private int _minionsGivenAPos = 0;
 
     public UnityEvent ManualCollect = new UnityEvent();
@@ -33,11 +36,16 @@ public class ResourceGenerator: MonoBehaviour
     private void Update()
     {
         _minionsGivenAPos = 0;
+        if (doOrbit)
+            _orbitAngle += Time.deltaTime;
     }
 
-    public void UpdateLevels()
+    public void UpdateLevels(int newLevel)
     {
-
+        foreach(Minion minion in minions)
+        {
+            minion.SetLevel(newLevel);
+        }
     }
 
     public void AddMinion(Minion minion)
@@ -51,7 +59,7 @@ public class ResourceGenerator: MonoBehaviour
         float angle = 0;
         if (minions.Count > 0)
             angle = (_minionsGivenAPos / (float)minions.Count) * 360f;
-        angle = (angle + Time.time * orbitSpeed) % 360f;
+        angle = (angle + _orbitAngle * orbitSpeed) % 360f;
         Vector3 orbitPos = (Quaternion.Euler(0f, 0f, angle) * Vector2.up) * workRadius;
         orbitPos += Vector3.forward * ((angle > 90f && angle < 270f) ? -0.5f : 0.5f);
         Vector3 target = transform.position + orbitPos;

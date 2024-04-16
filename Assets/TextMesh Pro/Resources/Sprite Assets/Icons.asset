@@ -82,6 +82,12 @@ MonoBehaviour:
     m_Scale: 1
     m_Name: Multiplier
     m_HashCode: -1926391349
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 7
+    m_Scale: 1
+    m_Name: WorldEater
+    m_HashCode: -2044892379
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -195,6 +201,22 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -678776914, guid: 19f307701d4332a46b6ee35677d0ee02, type: 3}
+  - m_Index: 7
+    m_Metrics:
+      m_Width: 128
+      m_Height: 128
+      m_HorizontalBearingX: -64
+      m_HorizontalBearingY: 64
+      m_HorizontalAdvance: 128
+    m_GlyphRect:
+      m_X: 384
+      m_Y: 0
+      m_Width: 128
+      m_Height: 128
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 820276324, guid: 19f307701d4332a46b6ee35677d0ee02, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
 --- !u!21 &4801317531685926348

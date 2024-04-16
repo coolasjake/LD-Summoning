@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
     private MinionWorkData _currentSummon = null;
     private bool _canSummon = false;
     private int _highestTier = 1;
+    private bool _gameFinished = false;
 
     void Awake()
     {
@@ -149,6 +150,9 @@ public class GameManager : MonoBehaviour
 
     private void TrySummon()
     {
+        if (_gameFinished)
+            return;
+
         if (_canSummon)
         {
             Debug.Log("Summoning " + _currentSummon.data.name);
@@ -161,19 +165,32 @@ public class GameManager : MonoBehaviour
             _currentSummon.data.discovered = true;
 
             bool isTempMinion = _currentSummon.Summon();
-            
-            if (_currentSummon.data.workType == ResourceType.All)
+
+
+            if (_currentSummon.WorkType == ResourceType.WorldEater)
+            {
+                _gameFinished = true;
+                Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
+                newMinion.Setup(_currentSummon.data, null, 666, false);
+                EndMusic.Invoke();
+                circle.enabled = false;
+                foreach (ResourceGenerator gen in generators)
+                {
+                    gen.doOrbit = false;
+                }
+            }
+            else if (_currentSummon.data.workType == ResourceType.All)
             {
                 for (int i = 0; i < 4; ++i)
                 {
                     Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
-                    newMinion.Setup(_currentSummon.data, generators[i], isTempMinion);
+                    newMinion.Setup(_currentSummon.data, generators[i], _currentSummon.level, isTempMinion);
                 }
             }
             else
             {
                 Minion newMinion = Instantiate<Minion>(minionPrefab, circle.transform.position, Quaternion.identity, transform);
-                newMinion.Setup(_currentSummon.data, generators[(int)_currentSummon.data.workType], isTempMinion);
+                newMinion.Setup(_currentSummon.data, generators[(int)_currentSummon.data.workType], _currentSummon.level, isTempMinion);
             }
 
             if (_currentSummon.data.tier > _highestTier)
@@ -189,6 +206,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (_gameFinished)
+            return;
+
         if (Time.time > _lastWork + workInterval)
         {
             WorkTick();
@@ -485,5 +505,6 @@ public enum ResourceType
     Flesh,
     Circle,
     Multiplier,
-    All
+    All,
+    WorldEater
 }
